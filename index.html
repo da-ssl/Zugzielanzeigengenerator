@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZZA-Generator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="zza-01">
+        <img id="hintergrund01" src="img/01.png">
+        <canvas	id="text01" width="4000" height="1640">Ihr Browser unterstüzt keine Canvas. Bitte stellen Sie sicher, dass JavaScript aktiviert ist, und dass Sie einen aktuellen Browser, wie z.B. Mozilla Firefox, verwenden.</canvas>
+        <img id="overlay01" src="img/01-overlay.png">
+    </div>
+    
+    <div id="eingabemaske">
+        <div class="ueberschrift">
+            Eingeben der Daten:
+        </div>
+
+        <div class="zugdaten-eingabe" id="zug1">
+            <div class="zugabschnitt">Zug 1:</div>
+            Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug1ziel">
+            Linie: <input type="text" placeholder="3" id="ibZug1linie">
+            Gleis: <input type="text" placeholder="11" id="ibZug1gleis">
+            Belegung: <input type="text" id="ibZug1ws">
+            in Minuten: <input type="text" id="ibZug1min">
+        </div>
+
+        <div class="zugdaten-eingabe" id="zug2">
+            <div class="zugabschnitt">Zug 2:</div>
+            Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug2ziel">
+            Linie: <input type="text" placeholder="3" id="ibZug2linie">
+            Gleis: <input type="text" placeholder="11" id="ibZug2gleis">
+            Belegung: <input type="text" id="ibZug2ws">
+            in Minuten: <input type="text" id="ibZug2min">
+        </div>
+
+        <div class="zugdaten-eingabe" id="zug3">
+            <div class="zugabschnitt">Zug 3:</div>
+            Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug3ziel">
+            Linie: <input type="text" placeholder="3" id="ibZug3linie">
+            Gleis: <input type="text" placeholder="11" id="ibZug3gleis">
+            Belegung: <input type="text" id="ibZug3ws">
+            in Minuten: <input type="text" id="ibZug3min">
+        </div>
+
+        <div id="zug4">
+            <div class="zugabschnitt">Zug 4:</div>
+            Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug4ziel">
+            Linie: <input type="text" placeholder="3" id="ibZug4linie">
+            Gleis: <input type="text" placeholder="11" id="ibZug4gleis">
+            Belegung: <input type="text" id="ibZug4ws">
+            in Minuten: <input type="text" id="ibZug4min">
+        </div>
+        
+    <button type="button" onclick="Eingabe();">Eingabe</button>
+    </div>
+    <script src="js/01-canvas.js"></script>
+</body>
+</html>
