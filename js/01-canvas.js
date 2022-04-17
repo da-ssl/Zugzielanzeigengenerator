@@ -5,12 +5,24 @@ var zug4linie = "";
 
 
 
-//function zug1linieSel() {
-    //let ausgabeZug1linie = document.getElementById("ibZug1linie").value;
-    //if ((ausgabeZug1linie = "S1")||(ausgabeZug1linie = "S2")||(ausgabeZug1linie = "S3")||(ausgabeZug1linie = "S4")||(ausgabeZug1linie = "S6")||(ausgabeZug1linie = "S7")||(ausgabeZug1linie = "S8")) {
-    //zug1linie = ausgabeZug1linie.slice(1); //erst ab dem zweiten Buchstaben wird genommen => aus S1 wird 1
-    //}
-//}
+/*function dropdownlinien(dropdownelement){
+    var dde = document.getElementById(dropdownelement);
+    dde.options.add("S1");
+    dde.options.add("S2");
+    dde.options.add("S3");
+    dde.options.add("S4");
+    dde.options.add("S6");
+    dde.options.add("S7");
+    dde.options.add("S8");
+    dde.options.add("RE");
+    dde.options.add("RB");
+}//Man könnte diese Funktion beim Seitenstart ausführen, um den unnötig langen HTML-Code zu kürzen. Ich bin aber zu dumm es beim Seitenstart auszuführen
+
+dropdownlinien('ibZug1linie');
+dropdownlinien('ibZug2linie');
+dropdownlinien('ibZug3linie');
+dropdownlinien('ibZug4linie');*/
+
 
 function leeren() {
     var d = document.getElementById("text01");
