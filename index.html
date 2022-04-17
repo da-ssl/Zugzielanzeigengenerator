@@ -33,6 +33,8 @@
                 <option>S6</option>
                 <option>S7</option>
                 <option>S8</option>
+                <option>RB</option>
+                <option>RE</option>
             </select>
             Gleis: <input type="text" placeholder="11" id="ibZug1gleis">
             Belegung: <input type="text" id="ibZug1ws">
@@ -43,7 +45,7 @@
             <div class="zugabschnitt">Zug 2:</div>
             Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug2ziel">
             Linie: 
-            <select id="ibZug2linie" onclick="zug2linieSel()">
+            <select id="ibZug2linie">
                 <option>--</option>
                 <option>S1</option>
                 <option>S2</option>
@@ -52,6 +54,8 @@
                 <option>S6</option>
                 <option>S7</option>
                 <option>S8</option>
+                <option>RB</option>
+                <option>RE</option>
             </select>
             Gleis: <input type="text" placeholder="11" id="ibZug2gleis">
             Belegung: <input type="text" id="ibZug2ws">
@@ -62,7 +66,7 @@
             <div class="zugabschnitt">Zug 3:</div>
             Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug3ziel">
             Linie:
-            <select id="ibZug3linie" onclick="zug3linieSel()">
+            <select id="ibZug3linie">
                 <option>--</option>
                 <option>S1</option>
                 <option>S2</option>
@@ -71,6 +75,8 @@
                 <option>S6</option>
                 <option>S7</option>
                 <option>S8</option>
+                <option>RB</option>
+                <option>RE</option>
             </select>
             Gleis: <input type="text" placeholder="11" id="ibZug3gleis">
             Belegung: <input type="text" id="ibZug3ws">
@@ -81,7 +87,7 @@
             <div class="zugabschnitt">Zug 4:</div>
             Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug4ziel">
             Linie:
-            <select id="ibZug4linie" onclick="zug4linieSel()">
+            <select id="ibZug4linie">
                 <option>--</option>
                 <option>S1</option>
                 <option>S2</option>
@@ -90,6 +96,8 @@
                 <option>S6</option>
                 <option>S7</option>
                 <option>S8</option>
+                <option>RB</option>
+                <option>RE</option>
             </select>
             Gleis: <input type="text" placeholder="11" id="ibZug4gleis">
             Belegung: <input type="text" id="ibZug4ws">
@@ -97,9 +105,16 @@
         </div>
         
         <button type="button" onclick="Eingabe();">Eingabe</button>
+        <button type="button" onclick="leeren();">Leeren</button>
     </div>
     
     <link rel="stylesheet" href="css/style.css">
     <script src="js/01-canvas.js"></script>
 </body>
+<footer>
+    <div class="footer">
+        Optimale Anzeige mit <a href="https://firefox.com">Mozilla Firefox</a>. ¹²³
+    </div>
+    
+</footer>
 </html>

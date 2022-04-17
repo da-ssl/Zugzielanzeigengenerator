@@ -3,10 +3,6 @@ var zug2linie = "";
 var zug3linie = "";
 var zug4linie = "";
 
-//zug1linieSel();
-zug2linieSel();
-zug3linieSel();
-zug4linieSel();
 
 
 //function zug1linieSel() {
@@ -16,8 +12,15 @@ zug4linieSel();
     //}
 //}
 
+function leeren() {
+    var d = document.getElementById("text01");
+    var e = d.getContext("2d");
+    e.clearRect(0, 0, d.width, d.height);
+}
 
 function Eingabe() {
+
+    leeren();
 
     var zug1linie = linieumwandeln ('ibZug1linie');
     let zug1ziel = document.getElementById("ibZug1ziel").value;
@@ -50,6 +53,7 @@ function Eingabe() {
     var ziel1 = c.getContext("2d");
     ziel1.font = "140px lcdzza10px"
     ziel1.fillStyle ="white";
+    ziel1.textAlign = "left"; 
     ziel1.fillText(zug1ziel, 772, 512)
 
     var ziel2 = c.getContext("2d");
@@ -199,6 +203,12 @@ function linieumwandeln (ddel) {
     }
     else if (value == "S8"){
         wert = "8";
+    }
+    else if (value == "RB"){
+        wert = "B";
+    }
+    else if (value == "RE"){
+        wert = "E";
     }
     else {
         wert = "";
