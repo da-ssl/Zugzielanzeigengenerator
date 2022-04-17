@@ -1,6 +1,39 @@
+var zug1linie = "";
+var zug2linie = "";
+var zug3linie = "";
+var zug4linie = "";
+
+zug1linieSel();
+zug2linieSel();
+zug3linieSel();
+zug4linieSel();
+
+
+function zug1linieSel() {
+    let ausgabeZug1linie = document.getElementById("ibZug1linie").value;
+    //if ((ausgabeZug1linie = "S1")||(ausgabeZug1linie = "S2")||(ausgabeZug1linie = "S3")||(ausgabeZug1linie = "S4")||(ausgabeZug1linie = "S6")||(ausgabeZug1linie = "S7")||(ausgabeZug1linie = "S8")) {
+    zug1linie = ausgabeZug1linie.slice(1); //erst ab dem zweiten Buchstaben wird genommen => aus S1 wird 1
+    //}
+}
+
+function zug2linieSel() {
+    let ausgabeZug2linie = document.getElementById("ibZug2linie").value;
+    zug2linie = ausgabeZug2linie.slice(1);
+}
+
+function zug3linieSel() {
+    let ausgabeZug3linie = document.getElementById("ibZug3linie").value;
+    zug3linie = ausgabeZug3linie.slice(1);
+}
+
+function zug4linieSel() {
+    let ausgabeZug4linie = document.getElementById("ibZug4linie").value;
+    zug4linie = ausgabeZug4linie.slice(1);
+}
+
 function Eingabe() {
+    //let zug1linie = document.getElementById("ibZug1linie").value;
     let zug1ziel = document.getElementById("ibZug1ziel").value;
-    let zug1linie = document.getElementById("ibZug1linie").value;
     let zug1gleis = document.getElementById("ibZug1gleis").value;
     let zug1ws = document.getElementById("ibZug1ws").value;
     let zug1min = document.getElementById("ibZug1min").value;
@@ -133,22 +166,22 @@ function Eingabe() {
     min2.font = "140px lcdzza10px"
     min2.fillStyle = "white";
     min2.textAlign = "end"; 
-    min2.fillText("39", 3480, 672);
+    min2.fillText(zug2min, 3480, 672);
 
     var min3 = c.getContext("2d");
     min3.font = "140px lcdzza10px"
     min3.fillStyle = "white";
     min3.textAlign = "end"; 
-    min3.fillText("59", 3480, 832);
+    min3.fillText(zug3min, 3480, 832);
 
     var min4 = c.getContext("2d");
     min4.font = "140px lcdzza10px"
     min4.fillStyle = "white";
     min4.textAlign = "end"; 
-    min4.fillText("79", 3480, 1000);
+    min4.fillText(zug4min, 3480, 1000);
 
     var wasserzeichen = c.getContext("2d");
-    wasserzeichen.font = "150px sans-serif";
+    wasserzeichen.font = "150px Anek Odia";
     wasserzeichen.fillStyle = "gray";
     wasserzeichen.textAlign = "end";
     wasserzeichen.fillText("test.thewalt.de/zzagen", 3950, 1340)

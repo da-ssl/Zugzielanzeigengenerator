@@ -22,7 +22,18 @@
         <div class="zugdaten-eingabe" id="zug1">
             <div class="zugabschnitt">Zug 1:</div>
             Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug1ziel">
-            Linie: <input type="text" placeholder="3" id="ibZug1linie">
+            <!--Linie: <input type="text" placeholder="3" id="ibZug1linie" maxlength="1" size="1">-->
+            Linie: 
+            <select id="ibZug1linie" onclick="zug1linieSel()">
+                <option>--</option>
+                <option>S1</option>
+                <option>S2</option>
+                <option>S3</option>
+                <option>S4</option>
+                <option>S6</option>
+                <option>S7</option>
+                <option>S8</option>
+            </select>
             Gleis: <input type="text" placeholder="11" id="ibZug1gleis">
             Belegung: <input type="text" id="ibZug1ws">
             in Minuten: <input type="text" id="ibZug1min">
@@ -31,7 +42,17 @@
         <div class="zugdaten-eingabe" id="zug2">
             <div class="zugabschnitt">Zug 2:</div>
             Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug2ziel">
-            Linie: <input type="text" placeholder="3" id="ibZug2linie">
+            Linie: 
+            <select id="ibZug2linie" onclick="zug2linieSel()">
+                <option>--</option>
+                <option>S1</option>
+                <option>S2</option>
+                <option>S3</option>
+                <option>S4</option>
+                <option>S6</option>
+                <option>S7</option>
+                <option>S8</option>
+            </select>
             Gleis: <input type="text" placeholder="11" id="ibZug2gleis">
             Belegung: <input type="text" id="ibZug2ws">
             in Minuten: <input type="text" id="ibZug2min">
@@ -40,7 +61,17 @@
         <div class="zugdaten-eingabe" id="zug3">
             <div class="zugabschnitt">Zug 3:</div>
             Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug3ziel">
-            Linie: <input type="text" placeholder="3" id="ibZug3linie">
+            Linie:
+            <select id="ibZug3linie" onclick="zug3linieSel()">
+                <option>--</option>
+                <option>S1</option>
+                <option>S2</option>
+                <option>S3</option>
+                <option>S4</option>
+                <option>S6</option>
+                <option>S7</option>
+                <option>S8</option>
+            </select>
             Gleis: <input type="text" placeholder="11" id="ibZug3gleis">
             Belegung: <input type="text" id="ibZug3ws">
             in Minuten: <input type="text" id="ibZug3min">
@@ -49,13 +80,23 @@
         <div id="zug4">
             <div class="zugabschnitt">Zug 4:</div>
             Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug4ziel">
-            Linie: <input type="text" placeholder="3" id="ibZug4linie">
+            Linie:
+            <select id="ibZug4linie" onclick="zug4linieSel()">
+                <option>--</option>
+                <option>S1</option>
+                <option>S2</option>
+                <option>S3</option>
+                <option>S4</option>
+                <option>S6</option>
+                <option>S7</option>
+                <option>S8</option>
+            </select>
             Gleis: <input type="text" placeholder="11" id="ibZug4gleis">
             Belegung: <input type="text" id="ibZug4ws">
             in Minuten: <input type="text" id="ibZug4min">
         </div>
         
-    <button type="button" onclick="Eingabe();">Eingabe</button>
+        <button type="button" onclick="Eingabe();">Eingabe</button>
     </div>
     <script src="js/01-canvas.js"></script>
 </body>
