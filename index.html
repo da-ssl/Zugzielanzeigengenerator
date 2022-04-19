@@ -4,134 +4,90 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZZA-Generator</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <title>Zugzielanzeiger-Generator</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/01.css">
 </head>
-
-<header style="height:120px;">
+<header>
     <img src="img/header.png" style="width:1000px;z-index:1;position:absolute;">
-    <img src="img/logo.png" style="z-index:2;width:300px;position:absolute;top:25px;margin-left:15px;">
+    <a href="index.html"><img src="img/logo.png" style="z-index:2;width:300px;position:absolute;top:25px;margin-left:15px;"></a>
 </header>
-
 <body>
     <div class="inhalt">
-        <h1>S-Bahn-Zugzielanzeiger.</h1>
-        <h2>Einfach, zweifarbig</h2>
-        
-        <div id="zza-01">
-            <img id="hintergrund01" src="img/01.png">
-            <canvas	id="text01" width="4000" height="1640">Ihr Browser unterstüzt keine Canvas. Bitte stellen Sie sicher, dass JavaScript aktiviert ist, und dass Sie einen aktuellen Browser, wie z.B. Mozilla Firefox, verwenden.</canvas>
-            <img id="overlay01" src="img/01-overlay.png">
+        <h1>Willkommen.</h1>
+        <p>
+            Diese Seiten befassen sich näher mit sogenannten Zugzielanzeigern. 
+            Zugzielanzeiger (auch Zuganzeiger) sind Bildschirme oder Anzeigetafeln, 
+            die meist die abfahrenden Züge einese bestimmten Gleises, einem bestimmten Bahnsteig
+            oder eines ganzen Bahnhofs in Kürze gezeigt werden. 
+            Zugzielanzeiger gibt es in vielen verschiedenen Variationen: 
+            Modern als LED- oder LCD-Bildschirme, als Rollband- oder Fallblattanzeigen,
+            oder klassisch als einfaches Schild.
+        </p>
+        <p>
+            Während heute an Provinzbahnhöfen meist sogenannte "Dynamische Schriftanzeiger"
+            installiert sind, gibt es an größeren, wichtigeren Bahnhöfen auch entsprechend
+            Zugzielanzeiger mit mehr Anzeigefläche und -funktionen bis hin zu den Großanzeigern,
+            die bis zu 24 Züge darstellen können.
+        </p>
+        <h2>Dynamische Schriftanzeiger</h2>
+        <div class="inline">
+            <div class="inline-title">Zeitanzeige eines DSA</div>
+            <div id="dsa">
+                <img id="dsa-bg" src="img/dsa1.png">
+                <marquee id="dsa-txt" >Dynamischer Schriftanzeiger.</marquee>
+                <script src="js/dsa.js"></script>
+            </div>
         </div>
+        <p>
+            Dynamische Schriftanzeiger sind kleine Zugzielanzeiger, die an kleineren Bahnhöfen als Informationsquelle dienen.
+            Von der Deutschen Bahn werden sie in Bahnhöfen der unteren 2 Klassen verbaut. Sie verfügen über ein einzeiliges
+            Matrix-LED-Display mit einer Auflösung von 96x8 Punkten. Über ihr Display zeigen sie in Laufschrift die Uhrzeit
+            und den nächsten Zug an. Bei Verspätungen, Ausfällen und Fahrplanänderungen wird dies auch angezeigt. Die Daten
+            werden über Mobilfunk - genauer gesagt GSM ("2G") - vom DB-eigenen Reisendeninformationssystem IRIS abgerufen.
+        </p>
+        <h2>LCD-Zugzielanzeiger</h2>
+        <p>
+            LCD-Zugzielanzeiger existieren in verschiedensten Ausführungen. Seit dem Redesign der DB AG wird die Schrift weiß
+            auf dunkelblau dargestellt, was auch dem sonstigen Design des Wegeleitsystems der Deutschen Bahn ausmacht. Zuerst
+            soll der wahrscheinlich häufigste Typ des LCD-Zugzielanzeigers vorgestellt werden:
+        </p>
+        <h3>Doppelte Bahnsteigsanzeige</h3>
+        <div class="inline">
+            <div class="inline-title">Display</div>
+            <img src="img/05-prev.png" id="inline-05-prev">
+        </div>
+        <p>
+            Diese Ausführung ist an den meisten Fernverkehrsbahnhöfen in Deutschland verbaut. Mit einer Auflösung von 960 x 640
+            Pixeln haben sie eine vergleichsweise große Anzeigefläche. Sie sind im Gegensatz zu den älteren Fallblattanzeigern
+            recht dynamisch was das Anzeigen von verschiedenen Inhalten angeht. So wurden schon viele Updates für die Anzeigemodi
+            auf diesen Displays ausgerollt: Während anfangs nur Uhrzeit, Linie, Gleis, Zwischenhalte und Endhalte dargestellt wurden
+            (die Schrift war auch dementsprechend größer), kamen irgendwann die folgenden Züge mit auf die Anzeigefläche. 2015 und 2016 rollte
+            die DB dieses Update aus. Inzwischen zeigt die Wagenstandsanzeige nicht mehr nur an, in welchen Abschnitten sich Wagen
+            welcher Klasse sich befinden, sondern sogar welcher Wagen sich in welchem Abschnitt befindet. Dass ist vor allem dann
+            nützlich, wenn der Wagenstand geändert wurde. Rechts ist der <i>ungefähre</i> Aufbau eines solchen Zuganzeigers zu sehen.
+        </p>
+        
+        
         
 
-
-        <div id="eingabemaske">
-            <div class="ueberschrift">
-                Eingeben der Daten:
+        <!--<div class="row">
+            <div class="cell">
+                <div class="beschreibung">
+                    S-Bahn-Zugzielanzeiger
+                </div>
+                <div class="beschreibung-u">
+                    Einfach, ohne Farbe
+                </div>
+                <img class="preview" id="preview-01">
             </div>
-
-            <div class="zugdaten-eingabe" id="zug1">
-                <div class="zugabschnitt">Zug 1:</div>
-                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug1ziel">
-                <!--Linie: <input type="text" placeholder="3" id="ibZug1linie" maxlength="1" size="1">-->
-                Linie: 
-                <select id="ibZug1linie">
-                    <option>--</option>
-                    <option>S1</option>
-                    <option>S2</option>
-                    <option>S3</option>
-                    <option>S4</option>
-                    <option>S6</option>
-                    <option>S7</option>
-                    <option>S8</option>
-                    <option>RB</option>
-                    <option>RE</option>
-                </select>
-                Gleis: <input type="text" placeholder="11" id="ibZug1gleis">
-                Belegung: <input type="text" id="ibZug1ws">
-                in Minuten: <input type="text" id="ibZug1min">
+            <div class="cell">
+        
             </div>
-
-            <div class="zugdaten-eingabe" id="zug2">
-                <div class="zugabschnitt">Zug 2:</div>
-                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug2ziel">
-                Linie: 
-                <select id="ibZug2linie">
-                    <option>--</option>
-                    <option>S1</option>
-                    <option>S2</option>
-                    <option>S3</option>
-                    <option>S4</option>
-                    <option>S6</option>
-                    <option>S7</option>
-                    <option>S8</option>
-                    <option>RB</option>
-                    <option>RE</option>
-                </select>
-                Gleis: <input type="text" placeholder="11" id="ibZug2gleis">
-                Belegung: <input type="text" id="ibZug2ws">
-                in Minuten: <input type="text" id="ibZug2min">
+            <div class="cell">
+        
             </div>
-
-            <div class="zugdaten-eingabe" id="zug3">
-                <div class="zugabschnitt">Zug 3:</div>
-                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug3ziel">
-                Linie:
-                <select id="ibZug3linie">
-                    <option>--</option>
-                    <option>S1</option>
-                    <option>S2</option>
-                    <option>S3</option>
-                    <option>S4</option>
-                    <option>S6</option>
-                    <option>S7</option>
-                    <option>S8</option>
-                    <option>RB</option>
-                    <option>RE</option>
-                </select>
-                Gleis: <input type="text" placeholder="11" id="ibZug3gleis">
-                Belegung: <input type="text" id="ibZug3ws">
-                in Minuten: <input type="text" id="ibZug3min">
-            </div>
-
-            <div id="zug4">
-                <div class="zugabschnitt">Zug 4:</div>
-                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug4ziel">
-                Linie:
-                <select id="ibZug4linie">
-                    <option>--</option>
-                    <option>S1</option>
-                    <option>S2</option>
-                    <option>S3</option>
-                    <option>S4</option>
-                    <option>S6</option>
-                    <option>S7</option>
-                    <option>S8</option>
-                    <option>RB</option>
-                    <option>RE</option>
-                </select>
-                Gleis: <input type="text" placeholder="11" id="ibZug4gleis">
-                Belegung: <input type="text" id="ibZug4ws">
-                in Minuten: <input type="text" id="ibZug4min">
-            </div> <br>
-            <input type="checkbox" id="lauftextletztezeile" value="no"> Hinweislauftext: 
-            <input type="text" id="ibZug4lauftext" size="129" placeholder="Achtung Zugbetrieb! Halten Sie Abstand von der Bahnsteigkante und betreten Sie den gekennzeichneten Bereich erst nach Halt des Zuges.">
-            <br><br>
-            <button type="button" onclick="Eingabe();">Eingabe</button>
-            <button type="button" onclick="leeren();">Leeren</button>
-        </div>
+        </div>-->
     </div>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/main.js"></script>
 </body>
-<footer>
-    <div class="footer">
-        Optimale Anzeige mit <a href="https://firefox.com">Mozilla Firefox</a>. ¹²³
-    </div>
-    
-</footer>
 </html>

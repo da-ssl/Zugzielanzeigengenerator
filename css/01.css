@@ -1,0 +1,67 @@
+#zza-01{
+    min-height: 400px;
+}
+
+#hintergrund01, #text01, #overlay01{
+    width: 950px;
+    position: absolute;
+}
+
+#overlay01{
+    z-index: 3;
+}
+
+#text01{
+    z-index: 2;
+}
+
+#hintergrund01{
+    z-index: 1;
+}
+
+.zugabschnitt{
+    font-family: 'Anek Odia', sans-serif;
+    margin-top: 15px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.zugabschnitt-eingabe{
+    font-family: 'Anek Odia', sans-serif;
+    font-weight: 400;
+}
+
+.zugdaten-eingabe{
+    margin-bottom: 15px;
+}
+
+
+#dsa-bg
+{
+    z-index:1;
+    top:10px;
+    left:10px;
+    width:350px;
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#dsa-txt
+{
+    z-index:2;
+    margin-top: 50px;
+    margin-left: 25px;
+    grid-column: 1;
+    grid-row: 1;
+    color:#f4d70f; 
+    font-family:'dsa-regular';
+    width: 300px;
+    font-size: 29px;
+    margin-top: 48px;
+}
+
+#dsa{
+    display: grid;
+    height: 91.5167px;
+    float: right;
+}

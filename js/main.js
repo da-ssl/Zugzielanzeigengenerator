@@ -3,32 +3,26 @@ var zug2linie = "";
 var zug3linie = "";
 var zug4linie = "";
 
-
-
-/*function dropdownlinien(dropdownelement){
-    var dde = document.getElementById(dropdownelement);
-    dde.options.add("S1");
-    dde.options.add("S2");
-    dde.options.add("S3");
-    dde.options.add("S4");
-    dde.options.add("S6");
-    dde.options.add("S7");
-    dde.options.add("S8");
-    dde.options.add("RE");
-    dde.options.add("RB");
-}//Man könnte diese Funktion beim Seitenstart ausführen, um den unnötig langen HTML-Code zu kürzen. Ich bin aber zu dumm es beim Seitenstart auszuführen
-
-dropdownlinien('ibZug1linie');
-dropdownlinien('ibZug2linie');
-dropdownlinien('ibZug3linie');
-dropdownlinien('ibZug4linie');*/
-
+var allowAnimations = false;
 
 function leeren() {
     var d = document.getElementById("text01");
     var e = d.getContext("2d");
     e.clearRect(0, 0, d.width, d.height);
+    allowAnimations = false;
+    lauftext4text = null;
 }
+
+function stopAnimations() {
+    allowAnimations = false;
+}
+function startAnimations() {
+    allowAnimations = true;
+}
+
+
+var c = document.getElementById("text01");
+
 
 function Eingabe() {
 
@@ -58,7 +52,8 @@ function Eingabe() {
     let zug4ws = document.getElementById("ibZug4ws").value;
     let zug4min = document.getElementById("ibZug4min").value;
 
-    var c = document.getElementById("text01");
+    var lauftext4text = document.getElementById("ibZug4lauftext").value;
+
 
     //Zug 1
 
@@ -189,48 +184,35 @@ function Eingabe() {
         min4.fillText(zug4min, 3480, 1000);
     } else 
     {
-        /*var lauftext4 = c.getContext("2d");
-        const move_pixel = 1;
-        var x = 1000;
-        lauftext4.font = "140px lcdzza10px";
-        lauftext4.fillStyle = "white";
-        var lauftext4text = "Hier steht ihr Lauftext, der nur als Beispiel dient.";
-        var text_width = lauftext4.measureText(lauftext4text).width;
-        lauftext4.fillText(lauftext4text, 3480, x);
-
-        function lauftext4beweg()
-        {
-            lauftext4.clearRect(3480,1000,x,2000);
-            if (x > text_width) {
-                x = x - move_pixel;
-            } else {
-                x = 500;
-            }
-            lauftext4.fillText(lauftext4text, x, 1000);
-            window.requestAnimationFrame(lauftext4beweg);
-        }*/
-
-        const move_pixel = 3;
+        allowAnimations = true;
+        move_pixel = 3;
         var lauftext4 = c.getContext("2d");
         lauftext4.font = "140px lcdzza10px";
         var x = 3480;
-        var lauftext4text = document.getElementById("ibZug4lauftext").value;
-        var text_width = lauftext4.measureText(lauftext4text).width;
-        lauftext4.fillText(lauftext4text, x, 3480);
+        //var text_width = lauftext4.measureText(lauftext4text).width;
+        //lauftext4.fillText("",0,0)
+        //lauftext4.fillText(lauftext4text, x, 3480);
+        console.log("lauftext4text = " + lauftext4text);
+        console.log("lauftext4 = " + lauftext4);
 
-        window.requestAnimationFrame(moveTicker);
-        function moveTicker()
+        lauftext(lauftext4, lauftext4text, "auto", 3480, 1000);
+
+        /*function moveTicker()
         {
-            lauftext4.clearRect(0,890,x,2000);
-            if (x > 480 /*-text_width*/)
-                x = x - move_pixel;
-            else
-                x = 4000 + text_width;
-            lauftext4.fillText(lauftext4text, x, 1000);	
-            window.requestAnimationFrame(moveTicker);
-        }
-        
-        /*lauftext4.fillText("", 3480, 1000);*/
+            if(allowAnimations == true){
+                lauftext4.clearRect(0,890,x,2000);
+                if (x > 480 )
+                    x = x - move_pixel;
+                else
+                    x = 4000 + text_width;
+                lauftext4.fillText(lauftext4text, x, 1000);	
+                window.requestAnimationFrame(moveTicker);
+            }
+            else {
+                window.requestAnimationFrame(moveTicker);
+            }
+            
+        }*/
     }
 
     
@@ -242,6 +224,33 @@ function Eingabe() {
     //wasserzeichen.fillText("test.thewalt.de/zzagen", 3950, 1340)
 
 }
+
+
+function lauftext(textelement, text, speed, xcoor, ycoor)
+{
+    
+    window.requestAnimationFrame(lauftext);
+    lauftext2 = c.getContext("2d");
+    text_width = lauftext2.measureText(textelement).width;
+    if(speed == "auto") {speed = 3} //Wenn man als Geschw. "auto" angibt, ist automatisch die Geschw. von 3 gesetzt.
+    if(allowAnimations == true) {
+        if (xcoor > 480 /*480 = Anfang jedes Lauftextes*/){
+            xcoor = xcoor - speed;
+            console.log("Animation: check");
+        }
+        else{
+            xcoor = 4000 + text_width;
+        }
+        console.log("text shoud be filled at: "+ xcoor + ", " + ycoor + " with the following text: " + text);
+        lauftext2.fillText(text, xcoor, ycoor);
+        
+        window.requestAnimationFrame(lauftext);
+    }
+    else{
+        window.requestAnimationFrame(lauftext);
+    }
+}
+
 
 function linieumwandeln (ddel) {
     var select = document.getElementById(ddel);
@@ -279,3 +288,4 @@ function linieumwandeln (ddel) {
     }
     return wert;
 }
+

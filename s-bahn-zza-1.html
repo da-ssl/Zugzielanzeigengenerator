@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Bahn-Zugzielanzeiger</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/01.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+</head>
+
+<header style="height:120px;">
+    <img src="img/header.png" style="width:1000px;z-index:1;position:absolute;">
+    <a href="index.html"><img src="img/logo.png" style="z-index:2;width:300px;position:absolute;top:25px;margin-left:15px;"></a>
+</header>
+
+<body>
+    <div class="inhalt">
+        <h1>S-Bahn-Zugzielanzeiger.</h1>
+        <h2>Einfach, zweifarbig</h2>
+        
+        <div id="zza-01">
+            <img id="hintergrund01" src="img/01.png">
+            <canvas	id="text01" width="4000" height="1640">Ihr Browser unterstüzt keine Canvas. Bitte stellen Sie sicher, dass JavaScript aktiviert ist, und dass Sie einen aktuellen Browser, wie z.B. Mozilla Firefox, verwenden.</canvas>
+            <img id="overlay01" src="img/01-overlay.png">
+        </div>
+        
+
+
+        <div id="eingabemaske">
+            <div class="ueberschrift">
+                Eingeben der Daten:
+            </div>
+
+            <div class="zugdaten-eingabe" id="zug1">
+                <div class="zugabschnitt">Zug 1:</div>
+                
+                    Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug1ziel">
+                    <!--Linie: <input type="text" placeholder="3" id="ibZug1linie" maxlength="1" size="1">-->
+                    Linie: 
+                    <select id="ibZug1linie">
+                        <option>--</option>
+                        <option>S1</option>
+                        <option>S2</option>
+                        <option>S3</option>
+                        <option>S4</option>
+                        <option>S6</option>
+                        <option>S7</option>
+                        <option>S8</option>
+                        <option>RB</option>
+                        <option>RE</option>
+                    </select>
+                    Gleis: <input type="text" placeholder="11" id="ibZug1gleis">
+                    Belegung: <input type="text" id="ibZug1ws">
+                    in Minuten: <input type="text" id="ibZug1min" size="3">
+            </div>
+
+            <div class="zugdaten-eingabe" id="zug2">
+                <div class="zugabschnitt">Zug 2:</div>
+                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug2ziel">
+                Linie: 
+                <select id="ibZug2linie">
+                    <option>--</option>
+                    <option>S1</option>
+                    <option>S2</option>
+                    <option>S3</option>
+                    <option>S4</option>
+                    <option>S6</option>
+                    <option>S7</option>
+                    <option>S8</option>
+                    <option>RB</option>
+                    <option>RE</option>
+                </select>
+                Gleis: <input type="text" placeholder="11" id="ibZug2gleis">
+                Belegung: <input type="text" id="ibZug2ws">
+                in Minuten: <input type="text" id="ibZug2min" size="3">
+            </div>
+
+            <div class="zugdaten-eingabe" id="zug3">
+                <div class="zugabschnitt">Zug 3:</div>
+                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug3ziel">
+                Linie:
+                <select id="ibZug3linie">
+                    <option>--</option>
+                    <option>S1</option>
+                    <option>S2</option>
+                    <option>S3</option>
+                    <option>S4</option>
+                    <option>S6</option>
+                    <option>S7</option>
+                    <option>S8</option>
+                    <option>RB</option>
+                    <option>RE</option>
+                </select>
+                Gleis: <input type="text" placeholder="11" id="ibZug3gleis">
+                Belegung: <input type="text" id="ibZug3ws">
+                in Minuten: <input type="text" id="ibZug3min" size="3">
+            </div>
+
+            <div id="zug4">
+                <div class="zugabschnitt">Zug 4:</div>
+                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug4ziel">
+                Linie:
+                <select id="ibZug4linie">
+                    <option>--</option>
+                    <option>S1</option>
+                    <option>S2</option>
+                    <option>S3</option>
+                    <option>S4</option>
+                    <option>S6</option>
+                    <option>S7</option>
+                    <option>S8</option>
+                    <option>RB</option>
+                    <option>RE</option>
+                </select>
+                Gleis: <input type="text" placeholder="11" id="ibZug4gleis">
+                Belegung: <input type="text" id="ibZug4ws">
+                in Minuten: <input type="text" id="ibZug4min" size="3">
+            </div> <br>
+            <input type="checkbox" id="lauftextletztezeile" value="no"> Hinweislauftext:
+            <input type="text" id="ibZug4lauftext" size="129" placeholder="Achtung Zugbetrieb! Halten Sie Abstand von der Bahnsteigkante und betreten Sie den gekennzeichneten Bereich erst nach Halt des Zuges.">
+            <br><br>
+            <button type="button" onclick="Eingabe();">Eingabe</button>
+            <button type="button" onclick="leeren();">Leeren</button>
+            <button type="button" onclick="stopAnimations();">Animationen anhalten.</button>
+            <button type="button" onclick="startAnimations();">Animationen wieder beginnen.</button>
+        </div>
+    </div>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+</body>
+<footer>
+    <div class="footer">
+        Optimale Anzeige mit <a href="https://firefox.com">Mozilla Firefox</a>. ¹²³
+    </div>
+    
+</footer>
+</html>
