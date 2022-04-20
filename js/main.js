@@ -19,6 +19,9 @@ var inMin = [];
 
 var allowAnimations = false;
 
+function fetchjson(){
+    
+}
 function leeren() {
     var d = document.getElementById("text01");
     var e = d.getContext("2d");
