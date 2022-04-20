@@ -11,6 +11,7 @@ var zzalines = 4; //Linien des ZZAs
 let takenconnections = [];
 let linecount = [];
 let lineraw = [];
+var productName = [];
 let platform = [];
 let platformchange = [];
 let plannedtime = [];
@@ -275,7 +276,7 @@ function lauftext(textelement, text, speed, xcoor, ycoor)
 }
 
 
-function linieumwandeln (ddel) {
+function linieumwandeln (ddel, productName = null) {
     
     try{var select = document.getElementById(ddel);
     var value = select.options[select.selectedIndex].text;
@@ -284,43 +285,24 @@ function linieumwandeln (ddel) {
         var value=ddel;
     }
     var wert;
-    if (value == "S1"){
-        wert = "1";
-    }
-    else if (value == "S2" || value == "S 2"){
-        wert = "2";
-    }
-    else if (value == "S3" || value == "S 3"){
-        wert = "3";
-    }
-    else if (value == "S4" || value == "S 4"){
-        wert = "4";
-    }
-    else if (value == "S6" || value == "S 6"){
-        wert = "6";
-    }
-    else if (value == "S7" || value == "S 7"){
-        wert = "7";
-    }
-    else if (value == "S8" || value == "S 8"){
-        wert = "8";
-    }
-    else if (value == "RB" || value.includes(" RB")){
-        wert = "B";
-    }
-    else if (value == "RE" || value.includes(" RE")){
-        wert = "E";
-    }
-    else {
-        wert = "";
-    }
+         if (value == "S1" || value == "S 1"){wert = "1";}
+    else if (value == "S2" || value == "S 2"){wert = "2";}
+    else if (value == "S3" || value == "S 3"){wert = "3";}
+    else if (value == "S4" || value == "S 4"){wert = "4";}
+    else if (value == "S6" || value == "S 6"){wert = "6";}
+    else if (value == "S7" || value == "S 7"){wert = "7";}
+    else if (value == "S8" || value == "S 8"){wert = "8";}
+    else if (value == "RB" || value.includes("RB")){wert = "B";}
+    else if (value == "RE" || value.includes("RE")){wert = "E";}
+    else if (productName == "ICE"){wert = "I";}
+    else {wert = "";}
     return wert;
 }
 
 var data;
 
 
-async function apirequest(traincount,){
+async function apirequest(traincount){
     leeren();                               //Bildschirm leeren
 
     console.log("GENERATING: Generating URL of API request...");
@@ -359,6 +341,7 @@ async function apirequest(traincount,){
                 takenconnections.push(i);
             }
         } catch(err){
+            console.log("ERROR: "+ err);
             console.log("CONCHECK: Error. Probably reached connection limit. Starting function again with more connections...");
             alert("Da hat etwas nicht geklappt. Bitte nochmal versuchen.");
             requestedduration = requestedduration * 4;
@@ -378,6 +361,7 @@ async function apirequest(traincount,){
     for (let i = firstcon; i<=lastcon;i++) {
         if(takenconnections.includes(i) == true) {
             lineraw[i] = depatures[i].line.name;                        //Linie
+            productName[i] = depatures[i].line.productName;              //Produktname, z.B. "ICE", "S" (statt "S 6")
             platform[i] = depatures[i].platform;                        //Gleis
             if(depatures[i].plannedPlatform != depatures[i].platform)   //Wenn das geplante Gleis nicht gleich dem stattfindenden Gleis ist,
                 {platformchange[i]=true;}                               //so wird die Variable "platformchange" auf true gesetzt.
@@ -397,7 +381,7 @@ async function apirequest(traincount,){
             
             //In Minuten
             inMin[i] = (((time[i]) - (Date.now() + 7200000)) / 60000).toFixed();
-            if(inMin[i] <= 0){inMin = " "}
+            //if(inMin[i] <= 0){inMin = " "; console.log("NOW: Train " + i + " is depaturing now")} //Falls der Zug in der aktuellen Minute abfährt, wird auf dem Display keine Minutenangabe mehr angezeigt
 
             console.log("GETTING: index: " + i + " LINE: " + lineraw[i] + " DELAY: " + delay[i] + " \"");
 
@@ -409,6 +393,34 @@ async function apirequest(traincount,){
                 direction[i] = depatures[i].direction;
                 console.log("GETTING: index " + i + ": Direction name taken: \"" + direction[i]);
             }
+            
+            //Bei Bahnhöfen, die mit München, Berlin, etc. beginnen, das wegkürzen (wird bei S-Bahn-Anzeigern auch nicht angezeigt)
+            var grosstaedte = ["München", "München-","Berlin", "Hamburg"];
+            var cityexeptions = ["München Ost"]
+                     
+            for (j=0; j<=grosstaedte.length; j++)
+            {
+                if(direction[i].startsWith(grosstaedte[j]))
+                {
+                    console.log("REPLACING: I'm going to delete the \"" + grosstaedte[j] + "\" part of " + direction[i]);
+                    try{
+                        var dir_temp;
+                        dir_temp = direction[i].replace(grosstaedte[j], "");
+                        direction[i] = dir_temp;
+                        console.log("REPLACING: should be succesfull")
+                    } catch(err) {
+                        console.log("REPLACING: Error!")
+                    }
+                }
+            }
+
+            if(direction[i].includes("(")){
+                //Bei Stationsnamen Ausdrücke, die in Klammern gesetzt sind, entfernen
+                //alert(currentdepature.split(""));
+                var tempdir =  direction[i].split('(')
+                direction[i] = tempdir[0];
+            }
+            
         }
     }
     
@@ -422,8 +434,8 @@ async function apirequest(traincount,){
     for(let i=0; i<=traincount; i++) {
 
         if(direction[i] != null /*Prüfen ob Eintrag gültig oder leer (weil gefiltert)*/){
-            currentline++;
-            console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), NUMBER " + currentline)    //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
+            currentline++; //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
+            console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), NUMBER " + currentline)    
             
             var  lineContext = c.getContext("2d");
             lineContext.font = "140px lcdzza10px-linien"
@@ -449,7 +461,7 @@ async function apirequest(traincount,){
             minContext.fillStyle ="white";
             minContext.textAlign = "end"; 
             minContext.fillText(inMin[i], ycoords[3], xcoords[currentline-1]);
-        }        
+            } else{console.log("NOW: Train in line " + currentline + " is depaturing now")}       
         }
         else {
             console.log("WRITE: Connection " + i +" will NOT be written (id " + i +" ), NUMBER ")
