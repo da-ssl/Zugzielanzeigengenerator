@@ -21,9 +21,12 @@ let direction = [];
 var inMin = [];
 
 var allowAnimations = false;
-
+var phipsiart = 
 function fetchjson(){
-    
+    fetch('https://v5.db.transport.rest/stops/8002347/departures?duration=120')
+    .then(res => res.json())
+    .then(data => phipsiart = (data))
+    .then(error => console.log('Error fetching JSON'))
 }
 function leeren() {
     var d = document.getElementById("text01");
