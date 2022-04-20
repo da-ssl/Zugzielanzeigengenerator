@@ -22,11 +22,9 @@ var inMin = [];
 var depatures = null;
 var phipsiart = null;
 var allowAnimations = false;
-
-
-async function apicall() {
-     const response = await fetch('')
-}
+var apiurl = null;
+var ibnrinput = null;
+var requestedduration = 120;
 
 
 function leeren() {
@@ -51,6 +49,7 @@ var c = document.getElementById("text01");
 function Eingabe() {
 
     leeren();
+    apicall();
 
     var zug1linie = linieumwandeln ('ibZug1linie');
     let zug1ziel = document.getElementById("ibZug1ziel").value;
@@ -309,7 +308,7 @@ function linieumwandeln (ddel) {
     else if (value == "RB" || value.includes(" RB")){
         wert = "B";
     }
-    else if (value == "RE"){
+    else if (value == "RE" || value.includes(" RE")){
         wert = "E";
     }
     else {
@@ -318,31 +317,53 @@ function linieumwandeln (ddel) {
     return wert;
 }
 
-function apirequest(traincount){
-    leeren();
-    console.log(servas());
-    console.log("Warten beginnt")
-    window.requestAnimationFrame(wait2);
-    function wait2(){
-        if(depatures != null) {
-            window.requestAnimationFrame(wait2);  
-        }
-    }
+var data;
 
+
+async function apirequest(traincount,){
+    leeren();                               //Bildschirm leeren
+
+    console.log("GENERATING: Generating URL of API request...");
+    ibnrinput = document.getElementById("ibIBNR").value;
+    if(ibnrinput==null){console.log("GENERATING: IBNR input was null. Cancelling operation."); return;}
+    apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput + "/departures?duration=" + requestedduration;
+
+
+    //Abrufen der API
+    console.log("CALLING: Starting to call the API with "+traincount+" connections...")
+
+    try{
+        
+        var response = await fetch(apiurl);
+        depatures = await response.json();
+        console.log(depatures);
+    }
+    catch(err) { //Fhlermeldung, falls der Abruf nicht geklappt hat,
+    console.log("CALLING ERROR: The API call did not work. Just try again. Cancelling operation...");   
+    }
+    console.log("CALLING: Succesfully called API data")
     
+    console.log("INFORMATION: Traincount: " + traincount + " Depatures.length: " + depatures.length)
     
-    console.log("api request is going to start with " + traincount + " connections");
 
     //Prüfen, ob es sich bei der Verbindung nicht um einen Bus handelt
     for (let i = 0; i <= traincount; i++) {
         console.log("CONCHECK: checking connection " + i + " ...")
-        if (depatures[i].line.productName == "Bus" || depatures[i].platform == undefined) {
-            //nichts tun
-            console.log("CONCHECK: connection " + i + " skipped: " + depatures[i].line.productName + "connection.");
-        }
-        else {
-            console.log("CONCHECK: connection " + i + " taken: not a bus connection. (connection:"+ depatures[i].line.productName + ")");
-            takenconnections.push(i);
+        try{
+            if (depatures[i].platform == null || depatures[i].plannedPlatform == undefined) {
+                //nichts tun
+                console.log("CONCHECK: connection " + i + " skipped: " + depatures[i].line.productName + " connection.");
+            }
+            else {
+                console.log("CONCHECK: connection " + i + " taken: not a bus connection. (connection:"+ depatures[i].line.productName + ")");
+                takenconnections.push(i);
+            }
+        } catch(err){
+            console.log("CONCHECK: Error. Probably reached connection limit. Starting function again with more connections...");
+            alert("Da hat etwas nicht geklappt. Bitte nochmal versuchen.");
+            requestedduration = requestedduration * 4;
+            
+            return;
         }
 
     }
