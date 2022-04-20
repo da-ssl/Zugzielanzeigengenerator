@@ -3,6 +3,20 @@ var zug2linie = "";
 var zug3linie = "";
 var zug4linie = "";
 
+var zzalines = 4; //Linien des ZZAs
+
+let takenconnections = [];
+let linecount = [];
+let lineraw = [];
+let platform = [];
+let platformchange = [];
+let plannedtime = [];
+let time = [];
+let delayed = [];
+let delay = [];
+let direction = [];
+var inMin = [];
+
 var allowAnimations = false;
 
 function leeren() {
@@ -189,15 +203,16 @@ function Eingabe() {
         var lauftext4 = c.getContext("2d");
         lauftext4.font = "140px lcdzza10px";
         var x = 3480;
-        //var text_width = lauftext4.measureText(lauftext4text).width;
-        //lauftext4.fillText("",0,0)
-        //lauftext4.fillText(lauftext4text, x, 3480);
+        var text_width = lauftext4.measureText(lauftext4text).width;
+        lauftext4.fillText("",0,0)
+        lauftext4.fillText(lauftext4text, x, 3480);
         console.log("lauftext4text = " + lauftext4text);
         console.log("lauftext4 = " + lauftext4);
 
-        lauftext(lauftext4, lauftext4text, "auto", 3480, 1000);
+        //lauftext(lauftext4, lauftext4text, "auto", 3480, 1000);
+        window.requestAnimationFrame(moveTicker);
 
-        /*function moveTicker()
+        function moveTicker()
         {
             if(allowAnimations == true){
                 lauftext4.clearRect(0,890,x,2000);
@@ -212,7 +227,7 @@ function Eingabe() {
                 window.requestAnimationFrame(moveTicker);
             }
             
-        }*/
+        }
     }
 
     
@@ -224,6 +239,8 @@ function Eingabe() {
     //wasserzeichen.fillText("test.thewalt.de/zzagen", 3950, 1340)
 
 }
+
+
 
 
 function lauftext(textelement, text, speed, xcoor, ycoor)
@@ -253,8 +270,13 @@ function lauftext(textelement, text, speed, xcoor, ycoor)
 
 
 function linieumwandeln (ddel) {
-    var select = document.getElementById(ddel);
+    
+    try{var select = document.getElementById(ddel);
     var value = select.options[select.selectedIndex].text;
+    }
+    catch(err){
+        var value=ddel;
+    }
     var wert;
     if (value == "S1"){
         wert = "1";
@@ -265,10 +287,10 @@ function linieumwandeln (ddel) {
     else if (value == "S3"){
         wert = "3";
     }
-    else if (value == "S4"){
+    else if (value == "S4" || value == "S 4"){
         wert = "4";
     }
-    else if (value == "S6"){
+    else if (value == "S6" || value == "S 6"){
         wert = "6";
     }
     else if (value == "S7"){
@@ -289,3 +311,2017 @@ function linieumwandeln (ddel) {
     return wert;
 }
 
+function apirequest(traincount){
+    
+    var depatures = [
+        {
+            "tripId": "1|389058|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T09:55:00+02:00",
+            "plannedWhen": "2022-04-20T09:55:00+02:00",
+            "delay": 0,
+            "platform": "3",
+            "plannedPlatform": "3",
+            "direction": "München Hbf Gl.5-10",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "brb-rb54",
+                "fahrtNr": "79068",
+                "name": "BRB RB54",
+                "public": true,
+                "adminCode": "M8____",
+                "productName": "BRB",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "bayerische-regiobahn",
+                    "name": "Bayerische Regiobahn"
+                },
+                "additionalName": "BRB RB54"
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8098262",
+                "name": "München Hbf Gl.5-10",
+                "location": {
+                    "type": "location",
+                    "id": "8098262",
+                    "latitude": 48.140094,
+                    "longitude": 11.555373
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": true,
+                    "regionalExp": true,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": true,
+                    "tram": true,
+                    "taxi": false
+                },
+                "station": {
+                    "type": "station",
+                    "id": "8000261",
+                    "name": "München Hbf",
+                    "location": {
+                        "type": "location",
+                        "id": "8000261",
+                        "latitude": 48.140364,
+                        "longitude": 11.558744
+                    },
+                    "products": {
+                        "nationalExpress": true,
+                        "national": true,
+                        "regionalExp": true,
+                        "regional": true,
+                        "suburban": true,
+                        "bus": true,
+                        "ferry": false,
+                        "subway": true,
+                        "tram": true,
+                        "taxi": false
+                    }
+                }
+            },
+            "currentTripPosition": {
+                "type": "location",
+                "latitude": 48.041689,
+                "longitude": 11.941306
+            }
+        },
+        {
+            "tripId": "1|249630|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T09:59:00+02:00",
+            "plannedWhen": "2022-04-20T09:48:00+02:00",
+            "delay": 660,
+            "platform": "1",
+            "plannedPlatform": "1",
+            "direction": "Ebersberg(Oberbay)",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6637",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8001634",
+                "name": "Ebersberg(Oberbay)",
+                "location": {
+                    "type": "location",
+                    "id": "8001634",
+                    "latitude": 48.074886,
+                    "longitude": 11.970494
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "currentTripPosition": {
+                "type": "location",
+                "latitude": 48.070886,
+                "longitude": 11.886949
+            }
+        },
+        {
+            "tripId": "1|389049|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:04:00+02:00",
+            "plannedWhen": "2022-04-20T10:04:00+02:00",
+            "delay": 0,
+            "platform": "5",
+            "plannedPlatform": "5",
+            "direction": "Kufstein",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "brb-rb54",
+                "fahrtNr": "79063",
+                "name": "BRB RB54",
+                "public": true,
+                "adminCode": "M8____",
+                "productName": "BRB",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "bayerische-regiobahn",
+                    "name": "Bayerische Regiobahn"
+                },
+                "additionalName": "BRB RB54"
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8100001",
+                "name": "Kufstein",
+                "location": {
+                    "type": "location",
+                    "id": "8100001",
+                    "latitude": 47.583509,
+                    "longitude": 12.165201
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": true,
+                    "regionalExp": true,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "currentTripPosition": {
+                "type": "location",
+                "latitude": 48.117693,
+                "longitude": 11.701807
+            }
+        },
+        {
+            "tripId": "1|392660|1|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "624538",
+                "name": "Bahnhof, Grafing b. München",
+                "location": {
+                    "type": "location",
+                    "id": "624538",
+                    "latitude": 48.043739,
+                    "longitude": 11.940677
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                },
+                "station": {
+                    "type": "station",
+                    "id": "8002347",
+                    "name": "Grafing Bahnhof",
+                    "location": {
+                        "type": "location",
+                        "id": "8002347",
+                        "latitude": 48.043424,
+                        "longitude": 11.940156
+                    },
+                    "products": {
+                        "nationalExpress": false,
+                        "national": false,
+                        "regionalExp": false,
+                        "regional": true,
+                        "suburban": true,
+                        "bus": true,
+                        "ferry": false,
+                        "subway": false,
+                        "tram": false,
+                        "taxi": false
+                    }
+                }
+            },
+            "when": "2022-04-20T10:10:00+02:00",
+            "plannedWhen": "2022-04-20T10:10:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Glonn, Bahnhofsplatz",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "5-mvvrbu-440",
+                "fahrtNr": "14756",
+                "name": "Bus 440",
+                "public": true,
+                "adminCode": "mvvRBU",
+                "productName": "Bus",
+                "mode": "bus",
+                "product": "bus",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "621239",
+                "name": "Bahnhofsplatz, Glonn",
+                "location": {
+                    "type": "location",
+                    "id": "621239",
+                    "latitude": 47.988913,
+                    "longitude": 11.8647
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": false,
+                    "suburban": false,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|252442|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:11:00+02:00",
+            "plannedWhen": "2022-04-20T10:11:00+02:00",
+            "delay": 0,
+            "platform": "11",
+            "plannedPlatform": "11",
+            "direction": "Wasserburg(Inn)Bf",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "rb-48",
+                "fahrtNr": "27345",
+                "name": "RB 48",
+                "public": true,
+                "adminCode": "8013D_",
+                "productName": "RB",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regionetz-verkehrs-gmbh-sudostbayernbahn",
+                    "name": "DB RegioNetz Verkehrs GmbH Südostbayernbahn"
+                },
+                "additionalName": "RB 48"
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8006220",
+                "name": "Wasserburg(Inn)Bf",
+                "location": {
+                    "type": "location",
+                    "id": "8006220",
+                    "latitude": 48.061744,
+                    "longitude": 12.185202
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": false,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": true
+                }
+            }
+        },
+        {
+            "tripId": "1|249650|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:14:00+02:00",
+            "plannedWhen": "2022-04-20T10:14:00+02:00",
+            "delay": 0,
+            "platform": "1",
+            "plannedPlatform": "1",
+            "direction": "Starnberg",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6646",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "station",
+                "id": "8005676",
+                "name": "Starnberg",
+                "location": {
+                    "type": "location",
+                    "id": "8005676",
+                    "latitude": 47.995934,
+                    "longitude": 11.34347
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": true,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|251716|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:31:00+02:00",
+            "plannedWhen": "2022-04-20T10:31:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Ebersberg(Oberbay)",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "3-b7-sev-1285801-5355333",
+                "fahrtNr": "95621",
+                "name": "Bus SEV",
+                "public": true,
+                "adminCode": "B7____",
+                "productName": "Bus",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8001634",
+                "name": "Ebersberg(Oberbay)",
+                "location": {
+                    "type": "location",
+                    "id": "8001634",
+                    "latitude": 48.074886,
+                    "longitude": 11.970494
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|249643|1|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:34:00+02:00",
+            "plannedWhen": "2022-04-20T10:34:00+02:00",
+            "delay": null,
+            "platform": "1",
+            "plannedPlatform": "1",
+            "direction": "Tutzing",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6648",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8005927",
+                "name": "Tutzing",
+                "location": {
+                    "type": "location",
+                    "id": "8005927",
+                    "latitude": 47.906815,
+                    "longitude": 11.272653
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|251786|2|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:35:00+02:00",
+            "plannedWhen": "2022-04-20T10:35:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Zorneding",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "3-b7-sev-1285801-5355333",
+                "fahrtNr": "97614",
+                "name": "Bus SEV",
+                "public": true,
+                "adminCode": "B7____",
+                "productName": "Bus",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "station",
+                "id": "8006671",
+                "name": "Zorneding",
+                "location": {
+                    "type": "location",
+                    "id": "8006671",
+                    "latitude": 48.089395,
+                    "longitude": 11.833004
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|249646|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:50:00+02:00",
+            "plannedWhen": "2022-04-20T10:48:00+02:00",
+            "delay": 120,
+            "platform": "1",
+            "plannedPlatform": "1",
+            "direction": "Ebersberg(Oberbay)",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6643",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8001634",
+                "name": "Ebersberg(Oberbay)",
+                "location": {
+                    "type": "location",
+                    "id": "8001634",
+                    "latitude": 48.074886,
+                    "longitude": 11.970494
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "currentTripPosition": {
+                "type": "location",
+                "latitude": 48.127051,
+                "longitude": 11.430054
+            }
+        },
+        {
+            "tripId": "1|389061|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:51:00+02:00",
+            "plannedWhen": "2022-04-20T10:51:00+02:00",
+            "delay": 0,
+            "platform": "3",
+            "plannedPlatform": "3",
+            "direction": "München Hbf Gl.5-10",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "brb-rb54",
+                "fahrtNr": "79070",
+                "name": "BRB RB54",
+                "public": true,
+                "adminCode": "M8____",
+                "productName": "BRB",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "bayerische-regiobahn",
+                    "name": "Bayerische Regiobahn"
+                },
+                "additionalName": "BRB RB54"
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8098262",
+                "name": "München Hbf Gl.5-10",
+                "location": {
+                    "type": "location",
+                    "id": "8098262",
+                    "latitude": 48.140094,
+                    "longitude": 11.555373
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": true,
+                    "regionalExp": true,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": true,
+                    "tram": true,
+                    "taxi": false
+                },
+                "station": {
+                    "type": "station",
+                    "id": "8000261",
+                    "name": "München Hbf",
+                    "location": {
+                        "type": "location",
+                        "id": "8000261",
+                        "latitude": 48.140364,
+                        "longitude": 11.558744
+                    },
+                    "products": {
+                        "nationalExpress": true,
+                        "national": true,
+                        "regionalExp": true,
+                        "regional": true,
+                        "suburban": true,
+                        "bus": true,
+                        "ferry": false,
+                        "subway": true,
+                        "tram": true,
+                        "taxi": false
+                    }
+                }
+            }
+        },
+        {
+            "tripId": "1|249659|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T10:54:00+02:00",
+            "plannedWhen": "2022-04-20T10:54:00+02:00",
+            "delay": null,
+            "platform": "4",
+            "plannedPlatform": "4",
+            "direction": "Tutzing",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6650",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8005927",
+                "name": "Tutzing",
+                "location": {
+                    "type": "location",
+                    "id": "8005927",
+                    "latitude": 47.906815,
+                    "longitude": 11.272653
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|389053|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:06:00+02:00",
+            "plannedWhen": "2022-04-20T11:06:00+02:00",
+            "delay": 0,
+            "platform": "5",
+            "plannedPlatform": "5",
+            "direction": "Kufstein",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "brb-rb54",
+                "fahrtNr": "79065",
+                "name": "BRB RB54",
+                "public": true,
+                "adminCode": "M8____",
+                "productName": "BRB",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "bayerische-regiobahn",
+                    "name": "Bayerische Regiobahn"
+                },
+                "additionalName": "BRB RB54"
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8100001",
+                "name": "Kufstein",
+                "location": {
+                    "type": "location",
+                    "id": "8100001",
+                    "latitude": 47.583509,
+                    "longitude": 12.165201
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": true,
+                    "regionalExp": true,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|392660|2|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "624538",
+                "name": "Bahnhof, Grafing b. München",
+                "location": {
+                    "type": "location",
+                    "id": "624538",
+                    "latitude": 48.043739,
+                    "longitude": 11.940677
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                },
+                "station": {
+                    "type": "station",
+                    "id": "8002347",
+                    "name": "Grafing Bahnhof",
+                    "location": {
+                        "type": "location",
+                        "id": "8002347",
+                        "latitude": 48.043424,
+                        "longitude": 11.940156
+                    },
+                    "products": {
+                        "nationalExpress": false,
+                        "national": false,
+                        "regionalExp": false,
+                        "regional": true,
+                        "suburban": true,
+                        "bus": true,
+                        "ferry": false,
+                        "subway": false,
+                        "tram": false,
+                        "taxi": false
+                    }
+                }
+            },
+            "when": "2022-04-20T11:10:00+02:00",
+            "plannedWhen": "2022-04-20T11:10:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Glonn, Bahnhofsplatz",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "5-mvvrbu-440",
+                "fahrtNr": "14757",
+                "name": "Bus 440",
+                "public": true,
+                "adminCode": "mvvRBU",
+                "productName": "Bus",
+                "mode": "bus",
+                "product": "bus",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "621239",
+                "name": "Bahnhofsplatz, Glonn",
+                "location": {
+                    "type": "location",
+                    "id": "621239",
+                    "latitude": 47.988913,
+                    "longitude": 11.8647
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": false,
+                    "suburban": false,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|252442|1|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:11:00+02:00",
+            "plannedWhen": "2022-04-20T11:11:00+02:00",
+            "delay": null,
+            "platform": "11",
+            "plannedPlatform": "11",
+            "direction": "Wasserburg(Inn)Bf",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "rb-48",
+                "fahrtNr": "27347",
+                "name": "RB 48",
+                "public": true,
+                "adminCode": "8013D_",
+                "productName": "RB",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regionetz-verkehrs-gmbh-sudostbayernbahn",
+                    "name": "DB RegioNetz Verkehrs GmbH Südostbayernbahn"
+                },
+                "additionalName": "RB 48"
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8006220",
+                "name": "Wasserburg(Inn)Bf",
+                "location": {
+                    "type": "location",
+                    "id": "8006220",
+                    "latitude": 48.061744,
+                    "longitude": 12.185202
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": false,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": true
+                }
+            }
+        },
+        {
+            "tripId": "1|249650|1|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:14:00+02:00",
+            "plannedWhen": "2022-04-20T11:14:00+02:00",
+            "delay": null,
+            "platform": "1",
+            "plannedPlatform": "1",
+            "direction": "Starnberg",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6652",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "station",
+                "id": "8005676",
+                "name": "Starnberg",
+                "location": {
+                    "type": "location",
+                    "id": "8005676",
+                    "latitude": 47.995934,
+                    "longitude": 11.34347
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": true,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|1488171|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "624538",
+                "name": "Bahnhof, Grafing b. München",
+                "location": {
+                    "type": "location",
+                    "id": "624538",
+                    "latitude": 48.043739,
+                    "longitude": 11.940677
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                },
+                "station": {
+                    "type": "station",
+                    "id": "8002347",
+                    "name": "Grafing Bahnhof",
+                    "location": {
+                        "type": "location",
+                        "id": "8002347",
+                        "latitude": 48.043424,
+                        "longitude": 11.940156
+                    },
+                    "products": {
+                        "nationalExpress": false,
+                        "national": false,
+                        "regionalExp": false,
+                        "regional": true,
+                        "suburban": true,
+                        "bus": true,
+                        "ferry": false,
+                        "subway": false,
+                        "tram": false,
+                        "taxi": false
+                    }
+                }
+            },
+            "when": "2022-04-20T11:23:00+02:00",
+            "plannedWhen": "2022-04-20T11:23:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Schalldorf, Kapelle",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "5-mvvrbu-444",
+                "fahrtNr": "14914",
+                "name": "Bus 444",
+                "public": true,
+                "adminCode": "mvvRBU",
+                "productName": "Bus",
+                "mode": "bus",
+                "product": "bus",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "624538",
+                "name": "Bahnhof, Grafing b. München",
+                "location": {
+                    "type": "location",
+                    "id": "624538",
+                    "latitude": 48.043739,
+                    "longitude": 11.940677
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                },
+                "station": {
+                    "type": "station",
+                    "id": "8002347",
+                    "name": "Grafing Bahnhof",
+                    "location": {
+                        "type": "location",
+                        "id": "8002347",
+                        "latitude": 48.043424,
+                        "longitude": 11.940156
+                    },
+                    "products": {
+                        "nationalExpress": false,
+                        "national": false,
+                        "regionalExp": false,
+                        "regional": true,
+                        "suburban": true,
+                        "bus": true,
+                        "ferry": false,
+                        "subway": false,
+                        "tram": false,
+                        "taxi": false
+                    }
+                }
+            }
+        },
+        {
+            "tripId": "1|251718|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:31:00+02:00",
+            "plannedWhen": "2022-04-20T11:31:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Ebersberg(Oberbay)",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "3-b7-sev-1285801-5355333",
+                "fahrtNr": "95625",
+                "name": "Bus SEV",
+                "public": true,
+                "adminCode": "B7____",
+                "productName": "Bus",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8001634",
+                "name": "Ebersberg(Oberbay)",
+                "location": {
+                    "type": "location",
+                    "id": "8001634",
+                    "latitude": 48.074886,
+                    "longitude": 11.970494
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|249643|2|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:34:00+02:00",
+            "plannedWhen": "2022-04-20T11:34:00+02:00",
+            "delay": null,
+            "platform": "1",
+            "plannedPlatform": "1",
+            "direction": "Tutzing",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6654",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8005927",
+                "name": "Tutzing",
+                "location": {
+                    "type": "location",
+                    "id": "8005927",
+                    "latitude": 47.906815,
+                    "longitude": 11.272653
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|251786|3|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:35:00+02:00",
+            "plannedWhen": "2022-04-20T11:35:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Zorneding",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "3-b7-sev-1285801-5355333",
+                "fahrtNr": "97618",
+                "name": "Bus SEV",
+                "public": true,
+                "adminCode": "B7____",
+                "productName": "Bus",
+                "mode": "train",
+                "product": "regional",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "station",
+                "id": "8006671",
+                "name": "Zorneding",
+                "location": {
+                    "type": "location",
+                    "id": "8006671",
+                    "latitude": 48.089395,
+                    "longitude": 11.833004
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|249646|1|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:48:00+02:00",
+            "plannedWhen": "2022-04-20T11:48:00+02:00",
+            "delay": null,
+            "platform": "1",
+            "plannedPlatform": "1",
+            "direction": "Ebersberg(Oberbay)",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6649",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8001634",
+                "name": "Ebersberg(Oberbay)",
+                "location": {
+                    "type": "location",
+                    "id": "8001634",
+                    "latitude": 48.074886,
+                    "longitude": 11.970494
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|249665|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "8002347",
+                "name": "Grafing Bahnhof",
+                "location": {
+                    "type": "location",
+                    "id": "8002347",
+                    "latitude": 48.043424,
+                    "longitude": 11.940156
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            },
+            "when": "2022-04-20T11:48:00+02:00",
+            "plannedWhen": "2022-04-20T11:48:00+02:00",
+            "delay": null,
+            "platform": "4",
+            "plannedPlatform": "4",
+            "direction": "Tutzing",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "4-800725-6",
+                "fahrtNr": "6656",
+                "name": "S 6",
+                "public": true,
+                "adminCode": "800725",
+                "productName": "S",
+                "mode": "train",
+                "product": "suburban",
+                "operator": {
+                    "type": "operator",
+                    "id": "db-regio-ag-bayern",
+                    "name": "DB Regio AG Bayern"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "8005927",
+                "name": "Tutzing",
+                "location": {
+                    "type": "location",
+                    "id": "8005927",
+                    "latitude": 47.906815,
+                    "longitude": 11.272653
+                },
+                "products": {
+                    "nationalExpress": true,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        },
+        {
+            "tripId": "1|392752|0|80|20042022",
+            "stop": {
+                "type": "stop",
+                "id": "624538",
+                "name": "Bahnhof, Grafing b. München",
+                "location": {
+                    "type": "location",
+                    "id": "624538",
+                    "latitude": 48.043739,
+                    "longitude": 11.940677
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": true,
+                    "suburban": true,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                },
+                "station": {
+                    "type": "station",
+                    "id": "8002347",
+                    "name": "Grafing Bahnhof",
+                    "location": {
+                        "type": "location",
+                        "id": "8002347",
+                        "latitude": 48.043424,
+                        "longitude": 11.940156
+                    },
+                    "products": {
+                        "nationalExpress": false,
+                        "national": false,
+                        "regionalExp": false,
+                        "regional": true,
+                        "suburban": true,
+                        "bus": true,
+                        "ferry": false,
+                        "subway": false,
+                        "tram": false,
+                        "taxi": false
+                    }
+                }
+            },
+            "when": "2022-04-20T11:53:00+02:00",
+            "plannedWhen": "2022-04-20T11:53:00+02:00",
+            "delay": null,
+            "platform": null,
+            "plannedPlatform": null,
+            "direction": "Aßling, Rathaus ü. Grafing Stadt (S)",
+            "provenance": null,
+            "line": {
+                "type": "line",
+                "id": "5-mvvrbu-447",
+                "fahrtNr": "15119",
+                "name": "Bus 447",
+                "public": true,
+                "adminCode": "mvvRBU",
+                "productName": "Bus",
+                "mode": "bus",
+                "product": "bus",
+                "operator": {
+                    "type": "operator",
+                    "id": "nahreisezug",
+                    "name": "Nahreisezug"
+                }
+            },
+            "remarks": [],
+            "origin": null,
+            "destination": {
+                "type": "stop",
+                "id": "620212",
+                "name": "Rathaus, Aßling",
+                "location": {
+                    "type": "location",
+                    "id": "620212",
+                    "latitude": 47.992086,
+                    "longitude": 12.004806
+                },
+                "products": {
+                    "nationalExpress": false,
+                    "national": false,
+                    "regionalExp": false,
+                    "regional": false,
+                    "suburban": false,
+                    "bus": true,
+                    "ferry": false,
+                    "subway": false,
+                    "tram": false,
+                    "taxi": false
+                }
+            }
+        }
+    ]
+    console.log("api request is going to start with " + traincount + " connections");
+
+    //Prüfen, ob es sich bei der Verbindung nicht um einen Bus handelt
+    for (let i = 0; i <= traincount; i++) {
+        console.log("CONCHECK: checking connection " + i + " ...")
+        if (depatures[i].line.productName == "Bus") {
+            //nichts tun
+            console.log("CONCHECK: connection " + i + " skipped: bus connection.");
+        }
+        else {
+            console.log("CONCHECK: connection " + i + " taken: not a bus connection. (connection:"+ depatures[i].line.productName + ")");
+            takenconnections.push(i);
+        }
+
+    }
+
+    //Jetzt werden die Daten aus jeder Zugverbindung extrahiert
+    var firstcon = takenconnections[0];
+    var lastcon = takenconnections[takenconnections.length-1];
+    console.log("GETTING: Starting to get variables. Firstcon: " + firstcon + " Lastcon: " + lastcon);
+    
+    
+
+    for (let i = firstcon; i<=lastcon;i++) {
+        if(takenconnections.includes(i) == true) {
+            lineraw[i] = depatures[i].line.name;                        //Linie
+            platform[i] = depatures[i].platform;                        //Gleis
+            if(depatures[i].plannedPlatform != depatures[i].platform)   //Wenn das geplante Gleis nicht gleich dem stattfindenden Gleis ist,
+                {platformchange[i]=true;}                               //so wird die Variable "platformchange" auf true gesetzt.
+            
+            let plannedtime1 = [];                                      //Zwischenspeicher für Fahrplanzeit in normalem Format
+            plannedtime1[i] = new Date(depatures[i].plannedWhen);
+            plannedtime[i] = plannedtime1[i].getTime() + 7200000;       //Jetzt in Unix-Format umgerechnet; +720k, weil Zeitzonenverschiebung (+2h)
+
+            let time1 = [];                                             //Zwischenspeicher für Zeit in normalem Format
+            time1[i] = new Date(depatures[i].when);                     
+            time[i] = time1[i].getTime() + 7200000;                     //Jetzt in Unix-Format umgerechnet; +720k, weil Zeitzonenverschiebung (+2h)
+            
+            if(plannedtime[i] != time[i]) {                             //Prüfen, ob Verspätung vorliegt
+                delayed[i] = true;                                      //Die Variable "delay" wird auf true gesetzt
+                delay[i] = (time[i] - plannedtime[i]) / 60000;          //und die Verspätung in Minuten berechnet
+            }
+            
+            //In Minuten
+            inMin[i] = (((time[i]) - (Date.now() + 7200000)) / 60000).toFixed();
+
+            console.log("GETTING: index: " + i + " LINE: " + lineraw[i] + " DELAY: " + delay[i] + " \"");
+
+            try {
+                direction[i] = depatures[i].destination.station.name;     //Der kurze Stationsmae station.name wird, falls vorhanden, gewählt
+                console.log("GETTING: index " + i + ": Short station name taken: \"" + direction[i] + " \"");
+            }
+            catch(err) {
+                direction[i] = depatures[i].direction;
+                console.log("GETTING: index " + i + ": Direction name taken: \"" + direction[i]);
+            }
+        }
+    }
+    
+    console.log("WRITE: Writing Text is being prepared...");
+    console.log("WRITE: Coordinates are beeing recieved...");
+    
+    var xcoords = [512, 672, 832, 1000];
+    var ycoords = [500, 772, 2470, 3480];
+
+    var currentline = 0;
+    for(let i=0; i<=traincount; i++) {
+
+        if(direction[i] != null /*Prüfen ob Eintrag gültig oder leer (weil gefiltert)*/){
+            currentline++;
+            console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), NUMBER " + currentline)    //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
+            
+            var  lineContext = c.getContext("2d");
+            lineContext.font = "140px lcdzza10px-linien"
+            lineContext.fillStyle ="white";
+            lineContext.textAlign = "left"; 
+            lineContext.fillText(linieumwandeln(lineraw[i]), ycoords[0], xcoords[currentline-1]); 
+
+            var  platformContext = c.getContext("2d");
+            platformContext.font = "140px lcdzza10px"
+            platformContext.fillStyle ="white";
+            platformContext.textAlign = "end"; 
+            platformContext.fillText(platform[i], ycoords[2], xcoords[currentline-1]);      //TODO: weiß hinterlegte Schrift, falls platformchange == true
+
+            var  destContext = c.getContext("2d");
+            destContext.font = "140px lcdzza10px"
+            destContext.fillStyle ="white";
+            destContext.textAlign = "left"; 
+            destContext.fillText(direction[i], ycoords[1], xcoords[currentline-1]);
+
+            var  minContext = c.getContext("2d");
+            minContext.font = "140px lcdzza10px"
+            minContext.fillStyle ="white";
+            minContext.textAlign = "end"; 
+            minContext.fillText(inMin[i], ycoords[3], xcoords[currentline-1]);          
+        }
+        else {
+            console.log("WRITE: Connection " + i +" will NOT be written (id " + i +" ), NUMBER ")
+        }
+
+        
+        
+    }
+
+
+    /*Benötigte Variablen:
+    -Linie (umgewandelt, das wird aber in einer anderen Funktion erledigt),
+    -Ziel
+    -Zeit (in Minuten umgewandelt)
+    -Verspätung (in Minuten)
+    -Gleis
+    -evtl. Belegung*/
+    
+    
+    /*var dest1 = depatures[0].direction;
+    var time1 = depatures[0].when;
+    var line1 = depatures[0].line.name;
+    console.log("Ziel: " + dest1);
+    console.log("Zeit: " + time1);
+    console.log("Linie: " + line1)*/
+}
