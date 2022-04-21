@@ -34,8 +34,10 @@
             <div class="ueberschrift">
                 Eingeben der Daten:
             </div>
-
+            <input type="radio" name="datasource" value="manual" id="manual"> <label for="manual">Daten manuell eingeben:</label>
             <div class="zugdaten-eingabe" id="zug1">
+                
+                
                 <div class="zugabschnitt">Zug 1:</div>
                 
                     Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug1ziel">
@@ -127,7 +129,8 @@
             <button type="button" onclick="leeren();">Leeren</button>
             <button type="button" onclick="stopAnimations();">Animationen anhalten.</button>
             <button type="button" onclick="startAnimations();">Animationen wieder beginnen.</button>
-            <br>
+            <br><br>
+            <input type="radio" name="datasource" value="auto" id="auto"> <label for="auto">Daten automatisch abrufen:</label>
             <input type="text" id="ibIBNR" placeholder="8000105">
             <button type="button" onclick="apirequest(49, 120);">Daten abrufen</button>
         </div>
