@@ -328,7 +328,7 @@ async function apirequest(traincount){
         console.log("GENERATING: Generating URL of API request...");
         ibnrinput = document.getElementById("ibIBNR").value;
         if(ibnrinput==null){console.log("GENERATING: IBNR input was null. Cancelling operation."); return;}
-        apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput + "/departures?duration=" + requestedduration;
+        apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput.trim() + "/departures?duration=" + requestedduration;
 
 
         //Abrufen der API
