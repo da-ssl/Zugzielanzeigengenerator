@@ -51,7 +51,7 @@ var c = document.getElementById("text01");
 function Eingabe() {
 
     leeren();
-    apicall();
+    //apicall();
 
     var zug1linie = linieumwandeln ('ibZug1linie');
     let zug1ziel = document.getElementById("ibZug1ziel").value;
@@ -295,7 +295,8 @@ function linieumwandeln (ddel, productName = null) {
     else if (value == "S8" || value == "S 8"){wert = "8";}
     else if (value == "RB" || value.includes("RB")){wert = "B";}
     else if (value == "RE" || value.includes("RE")){wert = "E";}
-    else if (productName == "ICE"){wert = "I"; console.log("------------")}
+    else if (productName == "ICE"|| value.includes("ICE")){wert = "I";}
+    else if (productName == "IC"|| value.includes("IC")) {wert = "i";}
     else {wert = "";}
     return wert;
 }
@@ -321,7 +322,7 @@ async function searchstation(searchstring, outputtf){
 
 async function apirequest(traincount){
     leeren();                               //Bildschirm leeren
-
+    document.getElementById("loading_gif").style.visibility = "visible";
     var res = document.getElementsByName('datasource'); //auto: Daten sollen autmatisch aberufen, manual: daten sollen manuell eingegeben werden
 
     if(res[1].checked){
@@ -465,6 +466,7 @@ async function apirequest(traincount){
     var xcoords = [512, 672, 832, 1000];
     var ycoords = [500, 772, 2470, 3480];
 
+
     var currentline = 0;
     for(let i=0; i<=traincount; i++) {
 
@@ -502,8 +504,9 @@ async function apirequest(traincount){
         }
         else {
             console.log("WRITE: Connection " + i +" will NOT be written (id " + i +", line: " +(currentline+1)+" )")
+           
         }
-
+        document.getElementById("loading_gif").style.visibility = "hidden";
         
         
     }

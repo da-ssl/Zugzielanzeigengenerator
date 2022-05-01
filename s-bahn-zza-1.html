@@ -44,16 +44,10 @@
                     <!--Linie: <input type="text" placeholder="3" id="ibZug1linie" maxlength="1" size="1">-->
                     Linie: 
                     <select id="ibZug1linie">
-                        <option>--</option>
-                        <option>S1</option>
-                        <option>S2</option>
-                        <option>S3</option>
-                        <option>S4</option>
-                        <option>S6</option>
-                        <option>S7</option>
-                        <option>S8</option>
-                        <option>RB</option>
-                        <option>RE</option>
+                        <option>S1</option> <option>S2</option> <option>S3</option>
+                        <option>S4</option> <option>S6</option> <option>S7</option>
+                        <option>S8</option> <option>RB</option> <option>RE</option>
+                        <option>IC</option> <option>ICE</option>
                     </select>
                     Gleis: <input type="text" placeholder="11" id="ibZug1gleis">
                     Belegung: <input type="text" id="ibZug1ws">
@@ -68,6 +62,7 @@
                     <option>S1</option> <option>S2</option> <option>S3</option>
                     <option>S4</option> <option>S6</option> <option>S7</option>
                     <option>S8</option> <option>RB</option> <option>RE</option>
+                    <option>IC</option> <option>ICE</option>
                 </select>
                 Gleis: <input type="text" placeholder="11" id="ibZug2gleis">
                 Belegung: <input type="text" id="ibZug2ws">
@@ -82,6 +77,7 @@
                     <option>S1</option> <option>S2</option> <option>S3</option>
                     <option>S4</option> <option>S6</option> <option>S7</option>
                     <option>S8</option> <option>RB</option> <option>RE</option>
+                    <option>IC</option> <option>ICE</option>
                 </select>
                 Gleis: <input type="text" placeholder="11" id="ibZug3gleis">
                 Belegung: <input type="text" id="ibZug3ws">
@@ -96,6 +92,7 @@
                     <option>S1</option> <option>S2</option> <option>S3</option>
                     <option>S4</option> <option>S6</option> <option>S7</option>
                     <option>S8</option> <option>RB</option> <option>RE</option>
+                    <option>IC</option> <option>ICE</option>
                 </select>
                 Gleis: <input type="text" placeholder="11" id="ibZug4gleis">
                 Belegung: <input type="text" id="ibZug4ws">
@@ -112,6 +109,7 @@
             <input type="radio" name="datasource" value="auto" id="auto"> <label for="auto">Daten automatisch abrufen:</label>
             <input type="text" id="ibIBNR" placeholder="8000105">
             <button type="button" onclick="apirequest(49, 120);">Daten abrufen</button>
+            <img src="img/loading.gif" id="loading_gif" style="height:16px;padding-top: 1px;padding-bottom: 1px; visibility: hidden;">
            <!--<button type="button" onclick="nextstation();">Suche näheste Station...</button>--> 
         </div>
     </div>
