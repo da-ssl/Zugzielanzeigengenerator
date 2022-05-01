@@ -333,6 +333,7 @@ async function apirequest(traincount){
 
         //Abrufen der API
         console.log("CALLING: Starting to call the API with "+traincount+" connections...")
+        console.log("CALLING: API-URL:" + apiurl)
 
         try{
             
@@ -469,40 +470,8 @@ async function apirequest(traincount){
 
         if(direction[i] != null /*Prüfen ob Eintrag gültig oder leer (weil gefiltert)*/){
             
-            if(delay[i-1] == 0){currentline++;} //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
-            else{
-                
-                allowAnimations = true;
-                move_pixel = 3;
-                var ticker = c.getContext("2d");
-                ticker.font = "140px lcdzza10px";
-                var x = ycoords[i];
-                var text_width = ticker.measureText(lauftext4text).width;
-                ticker.fillText("",0,0)
-                ticker.fillText("ca. " + departures[i].delay + " Min. später", x, 3480);
-                console.log("lauftext4text = " + lauftext4text);
-                //console.log("lauftext4 = " + lauftext4);
-
-                //lauftext(lauftext4, lauftext4text, "auto", 3480, 1000);
-                window.requestAnimationFrame(moveTicker);
-
-                function moveTicker()
-                {
-                    if(allowAnimations == true){
-                        ticker.clearRect(0,890,x,2000);
-                        if (x > 480 )
-                            x = x - move_pixel;
-                        else
-                            x = 4000 + text_width;
-                        lauftext4.fillText(lauftext4text, x, 1000);	
-                        window.requestAnimationFrame(moveTicker);
-                    }
-                    else {
-                        window.requestAnimationFrame(moveTicker);
-                    }
-            
-                }
-            }
+            //if(delay[i-1] == 0){currentline++;} //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
+            currentline++;
             console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), NUMBER " + currentline)    
             
             var  lineContext = c.getContext("2d");
