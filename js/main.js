@@ -314,7 +314,9 @@ async function searchstation(searchstring, outputtf){
             console.log(res);
         }
         catch(err) { //Fehlermeldung, falls der Abruf nicht geklappt hat,
-        console.log("CALLING ERROR: The API call did not work. Just try again. Cancelling operation..."); return;   
+        console.log("CALLING ERROR: The API call did not work. Just try again. Cancelling operation...");
+        document.getElementById("loading_gif").style.visibility = "hidden";
+        return;   
         }
 
         //document.getElementById(outputtf).value = respons[0].
@@ -365,9 +367,9 @@ async function apirequest(traincount){
             } catch(err){
                 console.log("ERROR: "+ err);
                 console.log("CONCHECK: Error. Probably reached connection limit. Starting function again with more connections...");
+                document.getElementById("loading_gif").style.visibility = "hidden";
                 alert("Da hat etwas nicht geklappt. Bitte nochmal versuchen.");
                 requestedduration = requestedduration * 4;
-                
                 return;
             }
 
