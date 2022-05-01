@@ -26,7 +26,8 @@ var allowAnimations = false;
 var apiurl = null;
 var ibnrinput = null;
 var requestedduration = 120;
-
+var data;
+var res =[];
 
 function leeren() {
     var d = document.getElementById("text01");
@@ -76,7 +77,8 @@ function Eingabe() {
     let zug4ws = document.getElementById("ibZug4ws").value;
     let zug4min = document.getElementById("ibZug4min").value;
 
-    var lauftext4text = document.getElementById("ibZug4lauftext").value;
+    
+var lauftext4text = document.getElementById("ibZug4lauftext").value;
 
 
     //Zug 1
@@ -275,7 +277,6 @@ function lauftext(textelement, text, speed, xcoor, ycoor)
     }
 }
 
-
 function linieumwandeln (ddel, productName = null) {
     
     try{var select = document.getElementById(ddel);
@@ -294,147 +295,168 @@ function linieumwandeln (ddel, productName = null) {
     else if (value == "S8" || value == "S 8"){wert = "8";}
     else if (value == "RB" || value.includes("RB")){wert = "B";}
     else if (value == "RE" || value.includes("RE")){wert = "E";}
-    else if (productName == "ICE"){wert = "I";}
+    else if (productName == "ICE"){wert = "I"; console.log("------------")}
     else {wert = "";}
     return wert;
 }
 
-var data;
+async function searchstation(searchstring, outputtf){
+    api_url = "https://v5.db.transport.rest/stations?fuzzy=true&query="+ searchstring;
+        if(searchstring == null){return;}
+    
+        //Abrufen der API
+        console.log("SEARCH: Starting to call the API for station IBNRs for request \""+ searchstring +"\"...")
 
+        try{
+            var response = await fetch(api_url);
+            res = await response.json();
+            console.log(res);
+        }
+        catch(err) { //Fehlermeldung, falls der Abruf nicht geklappt hat,
+        console.log("CALLING ERROR: The API call did not work. Just try again. Cancelling operation..."); return;   
+        }
+
+        //document.getElementById(outputtf).value = respons[0].
+}
 
 async function apirequest(traincount){
     leeren();                               //Bildschirm leeren
-    /*var sel;                            	//auto: Daten sollen autmatisch aberufen, manual: daten sollen manuell eingegeben werden
-    //const btn = document.querySelector('#btn'); 
-    const radioButtons = document.querySelectorAll('input[name="datasouce"]');
-    
-        
-    for (const radioButton of radioButtons) {
-        if (radioButton.checked) {
-            sel = radioButton.value;
-            break;
-        }
-    }
-    alert(sel);*/
-    
-    
-    
-    
-    console.log("GENERATING: Generating URL of API request...");
-    ibnrinput = document.getElementById("ibIBNR").value;
-    if(ibnrinput==null){console.log("GENERATING: IBNR input was null. Cancelling operation."); return;}
-    apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput + "/departures?duration=" + requestedduration;
+
+    var res = document.getElementsByName('datasource'); //auto: Daten sollen autmatisch aberufen, manual: daten sollen manuell eingegeben werden
+
+    if(res[1].checked){
+        console.log("GENERATING: Generating URL of API request...");
+        ibnrinput = document.getElementById("ibIBNR").value;
+        if(ibnrinput==null){console.log("GENERATING: IBNR input was null. Cancelling operation."); return;}
+        apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput + "/departures?duration=" + requestedduration;
 
 
-    //Abrufen der API
-    console.log("CALLING: Starting to call the API with "+traincount+" connections...")
+        //Abrufen der API
+        console.log("CALLING: Starting to call the API with "+traincount+" connections...")
 
-    try{
-        
-        var response = await fetch(apiurl);
-        departures = await response.json();
-        console.log(departures);
-    }
-    catch(err) { //Fhlermeldung, falls der Abruf nicht geklappt hat,
-    console.log("CALLING ERROR: The API call did not work. Just try again. Cancelling operation...");   
-    }
-    console.log("CALLING: Succesfully called API data")
-    
-    console.log("INFORMATION: Traincount: " + traincount + " departures.length: " + departures.length)
-    
-
-    //Prüfen, ob es sich bei der Verbindung nicht um einen Bus handelt
-    for (let i = 0; i <= traincount; i++) {
-        //console.log("CONCHECK: checking connection " + i + " ...")
         try{
-            if (departures[i].line.product == "suburban" || departures[i].line.product == "regional" || departures[i].line.product == "nationalExpress") {
-                console.log("CONCHECK: connection " + i + " taken: "+ departures[i].line.productName + " connection.");
-                takenconnections.push(i);
-            }
-            else {
-                //nichts tun
-                console.log("CONCHECK: connection " + i + " skipped: " + departures[i].line.productName + " connection.");
-            }
-        } catch(err){
-            console.log("ERROR: "+ err);
-            console.log("CONCHECK: Error. Probably reached connection limit. Starting function again with more connections...");
-            alert("Da hat etwas nicht geklappt. Bitte nochmal versuchen.");
-            requestedduration = requestedduration * 4;
             
-            return;
+            var response = await fetch(apiurl);
+            departures = await response.json();
+            console.log(departures);
+        }
+        catch(err) { //Fhlermeldung, falls der Abruf nicht geklappt hat,
+        console.log("CALLING ERROR: The API call did not work. Just try again. Cancelling operation...");   
+        }
+        console.log("CALLING: Succesfully called API data")
+        
+        console.log("INFORMATION: Traincount: " + traincount + " departures.length: " + departures.length)
+        
+
+        //Prüfen, ob es sich bei der Verbindung nicht um einen Bus handelt
+        for (let i = 0; i <= traincount; i++) {
+            //console.log("CONCHECK: checking connection " + i + " ...")
+            try{
+                if (departures[i].platform != null) { //departures[i].line.product == "suburban" || departures[i].line.product == "regional" || departures[i].line.product == "nationalExpress"
+                    console.log("CONCHECK: connection " + i + " taken: "+ departures[i].line.productName + " connection.");
+                    takenconnections.push(i);
+                }
+                else {
+                    //nichts tun
+                    console.log("CONCHECK: connection " + i + " skipped: " + departures[i].line.productName + " connection.");
+                }
+            } catch(err){
+                console.log("ERROR: "+ err);
+                console.log("CONCHECK: Error. Probably reached connection limit. Starting function again with more connections...");
+                alert("Da hat etwas nicht geklappt. Bitte nochmal versuchen.");
+                requestedduration = requestedduration * 4;
+                
+                return;
+            }
+
         }
 
-    }
+        //Jetzt werden die Daten aus jeder Zugverbindung extrahiert
+        var firstcon = takenconnections[0];
+        var lastcon = takenconnections[takenconnections.length-1];
+        console.log("GETTING: Starting to get variables. Firstcon: " + firstcon + " Lastcon: " + lastcon);
+        
+        
 
-    //Jetzt werden die Daten aus jeder Zugverbindung extrahiert
-    var firstcon = takenconnections[0];
-    var lastcon = takenconnections[takenconnections.length-1];
-    console.log("GETTING: Starting to get variables. Firstcon: " + firstcon + " Lastcon: " + lastcon);
-    
-    
+        for (let i = firstcon; i<=lastcon;i++) {
+            if(takenconnections.includes(i) == true) {
+                lineraw[i] = departures[i].line.name;                        //Linie
+                productName[i] = departures[i].line.productName;              //Produktname, z.B. "ICE", "S" (statt "S 6")
+                platform[i] = departures[i].platform;                        //Gleis
+                if(departures[i].plannedPlatform != departures[i].platform)   //Wenn das geplante Gleis nicht gleich dem stattfindenden Gleis ist,
+                    {platformchange[i]=true;}                               //so wird die Variable "platformchange" auf true gesetzt.
+                
+                let plannedtime1 = [];                                      //Zwischenspeicher für Fahrplanzeit in normalem Format
+                plannedtime1[i] = new Date(departures[i].plannedWhen);
+                plannedtime[i] = plannedtime1[i].getTime() + 7200000;       //Jetzt in Unix-Format umgerechnet; +720k, weil Zeitzonenverschiebung (+2h)
 
-    for (let i = firstcon; i<=lastcon;i++) {
-        if(takenconnections.includes(i) == true) {
-            lineraw[i] = departures[i].line.name;                        //Linie
-            productName[i] = departures[i].line.productName;              //Produktname, z.B. "ICE", "S" (statt "S 6")
-            platform[i] = departures[i].platform;                        //Gleis
-            if(departures[i].plannedPlatform != departures[i].platform)   //Wenn das geplante Gleis nicht gleich dem stattfindenden Gleis ist,
-                {platformchange[i]=true;}                               //so wird die Variable "platformchange" auf true gesetzt.
-            
-            let plannedtime1 = [];                                      //Zwischenspeicher für Fahrplanzeit in normalem Format
-            plannedtime1[i] = new Date(departures[i].plannedWhen);
-            plannedtime[i] = plannedtime1[i].getTime() + 7200000;       //Jetzt in Unix-Format umgerechnet; +720k, weil Zeitzonenverschiebung (+2h)
+                let time1 = [];                                             //Zwischenspeicher für Zeit in normalem Format
+                time1[i] = new Date(departures[i].when);                     
+                time[i] = time1[i].getTime() + 7200000;                     //Jetzt in Unix-Format umgerechnet; +720k, weil Zeitzonenverschiebung (+2h)
+                
+                if(plannedtime[i] != time[i]) {                             //Prüfen, ob Verspätung vorliegt
+                    delayed[i] = true;                                      //Die Variable "delay" wird auf true gesetzt
+                    delay[i] = (time[i] - plannedtime[i]) / 60000;          //und die Verspätung in Minuten berechnet
+                }
+                
+                //In Minuten
+                inMin[i] = (((time[i]) - (Date.now() + 7200000)) / 60000).toFixed();
+                //if(inMin[i] <= 0){inMin = " "; console.log("NOW: Train " + i + " is depaturing now")} //Falls der Zug in der aktuellen Minute abfährt, wird auf dem Display keine Minutenangabe mehr angezeigt
 
-            let time1 = [];                                             //Zwischenspeicher für Zeit in normalem Format
-            time1[i] = new Date(departures[i].when);                     
-            time[i] = time1[i].getTime() + 7200000;                     //Jetzt in Unix-Format umgerechnet; +720k, weil Zeitzonenverschiebung (+2h)
-            
-            if(plannedtime[i] != time[i]) {                             //Prüfen, ob Verspätung vorliegt
-                delayed[i] = true;                                      //Die Variable "delay" wird auf true gesetzt
-                delay[i] = (time[i] - plannedtime[i]) / 60000;          //und die Verspätung in Minuten berechnet
-            }
-            
-            //In Minuten
-            inMin[i] = (((time[i]) - (Date.now() + 7200000)) / 60000).toFixed();
-            //if(inMin[i] <= 0){inMin = " "; console.log("NOW: Train " + i + " is depaturing now")} //Falls der Zug in der aktuellen Minute abfährt, wird auf dem Display keine Minutenangabe mehr angezeigt
+                console.log("GETTING: index: " + i + " LINE: " + lineraw[i] + " DELAY: " + delay[i] + " \"");
 
-            console.log("GETTING: index: " + i + " LINE: " + lineraw[i] + " DELAY: " + delay[i] + " \"");
-
-            try {
-                direction[i] = departures[i].destination.station.name;     //Der kurze Stationsmae station.name wird, falls vorhanden, gewählt
-                console.log("GETTING: index " + i + ": Short station name taken: \"" + direction[i] + " \"");
-            }
-            catch(err) {
-                direction[i] = departures[i].direction;
-                console.log("GETTING: index " + i + ": Direction name taken: \"" + direction[i]);
-            }
-            
-            //Bei Bahnhöfen, die mit München, Berlin, etc. beginnen, das wegkürzen (wird bei S-Bahn-Anzeigern auch nicht angezeigt)
-            var replace1 = ["München Leuchtenbergring", "München-Pasing", "München Flughafen Terminal"]
-            var replace2 = ["Leuchtenbergring", "Pasing", "Flughafen/Airport °"];
-                     
-            for (j=0; j<=replace1.length; j++)
-            {
-                if(direction[i]==(replace1[j]))
+                try {
+                    direction[i] = departures[i].destination.station.name;     //Der kurze Stationsmae station.name wird, falls vorhanden, gewählt
+                    console.log("GETTING: index " + i + ": Short station name taken: \"" + direction[i] + " \"");
+                }
+                catch(err) {
+                    direction[i] = departures[i].direction;
+                    console.log("GETTING: index " + i + ": Direction name taken: \"" + direction[i]);
+                }
+                
+                //Bei Bahnhöfen, die mit München, Berlin, etc. beginnen, das wegkürzen (wird bei S-Bahn-Anzeigern auch nicht angezeigt)
+                var replace1 = ["München Leuchtenbergring", "München-Pasing", "München Flughafen Terminal"]
+                var replace2 = ["Leuchtenbergring", "Pasing", "Flughafen/Airport °"];
+                        
+                for (j=0; j<=replace1.length; j++)
                 {
-                    console.log("REPLACING: Replacing \"" + replace1[j] + "\" with \"" + replace2[j] +"\"");
-                    try{
-                        direction[i] = replace2[j];
-                    } catch(err) {
-                        console.log("REPLACING: Error!")
+                    if(direction[i]==(replace1[j]))
+                    {
+                        console.log("REPLACING: Replacing \"" + replace1[j] + "\" with \"" + replace2[j] +"\"");
+                        try{
+                            direction[i] = replace2[j];
+                        } catch(err) {
+                            console.log("REPLACING: Error!")
+                        }
                     }
                 }
-            }
 
-            if(direction[i].includes("(")){
-                //Bei Stationsnamen Ausdrücke, die in Klammern gesetzt sind, entfernen
-                //alert(currentdepature.split(""));
-                var tempdir =  direction[i].split('(')
-                direction[i] = tempdir[0];
+                if(direction[i].includes("(") && direction[i].slice(-1)==")"){      //Falls ein Bfsname "(" beinhaltet und mit ")" endet
+                                                                                    //Ausdrücke, die in Klammern gesetzt sind, entfernen
+                    var tempdir =  direction[i].split('(')                        //Ausdrücke, die in Klammern gesetzt sind, entfernen
+                    direction[i] = tempdir[0];
+                }
+                
             }
-            
+        }
+    } else{
+        //======DATEN MANUELL ABFRAGEN=======
+        for(let i=0; i<=3; i++) {   //y zeigt die aktuelle Zeile im ZZA
+            var destinput = [];
+            destinput[i] = [document.getElementById("ibZug1ziel"), document.getElementById("ibZug2ziel"), document.getElementById("ibZug3ziel"), document.getElementById("ibZug4ziel")];
+            var destinput2 = [];
+            destinput2[i] = ["ibZug1ziel", 'ibZug2ziel']
+            try{
+                console.log("GETTINGDATA: Going to write train to "+ document.getElementById(destinput2[i]).value)
+            } catch(err) {
+                console.log("GETTINGDATA: Error. ConID: " + i)
+            }
+            //direction[y] = document.getElementById(destinput[y]).value;
+
         }
     }
+    
+    
     
     console.log("WRITE: Writing Text is being prepared...");
     console.log("WRITE: Coordinates are beeing recieved...");
@@ -446,14 +468,48 @@ async function apirequest(traincount){
     for(let i=0; i<=traincount; i++) {
 
         if(direction[i] != null /*Prüfen ob Eintrag gültig oder leer (weil gefiltert)*/){
-            currentline++; //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
+            
+            if(delay[i-1] == 0){currentline++;} //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
+            else{
+                
+                allowAnimations = true;
+                move_pixel = 3;
+                var ticker = c.getContext("2d");
+                ticker.font = "140px lcdzza10px";
+                var x = ycoords[i];
+                var text_width = ticker.measureText(lauftext4text).width;
+                ticker.fillText("",0,0)
+                ticker.fillText("ca. " + departures[i].delay + " Min. später", x, 3480);
+                console.log("lauftext4text = " + lauftext4text);
+                //console.log("lauftext4 = " + lauftext4);
+
+                //lauftext(lauftext4, lauftext4text, "auto", 3480, 1000);
+                window.requestAnimationFrame(moveTicker);
+
+                function moveTicker()
+                {
+                    if(allowAnimations == true){
+                        ticker.clearRect(0,890,x,2000);
+                        if (x > 480 )
+                            x = x - move_pixel;
+                        else
+                            x = 4000 + text_width;
+                        lauftext4.fillText(lauftext4text, x, 1000);	
+                        window.requestAnimationFrame(moveTicker);
+                    }
+                    else {
+                        window.requestAnimationFrame(moveTicker);
+                    }
+            
+                }
+            }
             console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), NUMBER " + currentline)    
             
             var  lineContext = c.getContext("2d");
             lineContext.font = "140px lcdzza10px-linien"
             lineContext.fillStyle ="white";
             lineContext.textAlign = "left"; 
-            lineContext.fillText(linieumwandeln(lineraw[i]), ycoords[0], xcoords[currentline-1]); 
+            lineContext.fillText(linieumwandeln(lineraw[i], departures[i].line.productName), ycoords[0], xcoords[currentline-1]); 
 
             var  platformContext = c.getContext("2d");
             platformContext.font = "140px lcdzza10px"
@@ -476,7 +532,7 @@ async function apirequest(traincount){
             } else{console.log("NOW: Train in line " + currentline + " is depaturing now")}       
         }
         else {
-            console.log("WRITE: Connection " + i +" will NOT be written (id " + i +" ), NUMBER ")
+            console.log("WRITE: Connection " + i +" will NOT be written (id " + i +", line: " +(currentline+1)+" )")
         }
 
         
@@ -500,3 +556,36 @@ async function apirequest(traincount){
     console.log("Zeit: " + time1);
     console.log("Linie: " + line1)*/
 }
+
+async function searchstations() {
+    const stationresponse = await fetch('/searchstations');
+    const stationanswer = await stationresponse.json();
+    console.log(stationanswer)
+}
+
+
+
+/*async function nextstation() {
+    if('geolocation' in navigator) {
+        console.log("Getting user location...")
+        navigator.geolocation.getCurrentPosition(async position => {
+            console.log(position.coords);
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const location = {lon, lat}
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(location)
+            }
+            const response = await fetch('/locate', options)
+            const data = await response.json();
+            console.log(data);
+          });
+        
+    } else {
+        alert("An error occured attempting to get usere's geolocation. Make sure you are connected to the website via https.")
+    }
+}*/
