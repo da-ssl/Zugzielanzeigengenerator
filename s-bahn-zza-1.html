@@ -105,10 +105,11 @@
             <button type="button" onclick="leeren();">Leeren</button>
             <button type="button" onclick="stopAnimations();">Animationen anhalten.</button>
             <button type="button" onclick="startAnimations();">Animationen wieder beginnen.</button>
+            <button type="button" onclick="laufschrift('Beispiellauftext', 672);">Lauftext-Debug</button>
             <br><br>
             <input type="radio" name="datasource" value="auto" id="auto"> <label for="auto">Daten automatisch abrufen:</label>
             <input type="text" id="ibIBNR" placeholder="8000105">
-            <button type="button" onclick="apirequest(49, 120);">Daten abrufen</button>
+            <button type="button" onclick="apirequest(4);">Daten abrufen</button>
             <img src="img/loading.gif" id="loading_gif" style="height:16px;padding-top: 1px;padding-bottom: 1px; visibility: hidden;">
            <!--<button type="button" onclick="nextstation();">Suche näheste Station...</button>--> 
            <h2 style="margin-top: 20px;">Wichtige IBNRs:</h2>

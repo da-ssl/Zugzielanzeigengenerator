@@ -28,13 +28,17 @@ var ibnrinput = null;
 var requestedduration = 120;
 var data;
 var res =[];
+var remarksraw=[];
+var remarksformatted = [];
+var cancelAnimations;
 
 function leeren() {
     var d = document.getElementById("text01");
     var e = d.getContext("2d");
     e.clearRect(0, 0, d.width, d.height);
     allowAnimations = false;
-    lauftext4text = null;
+    lauftext = null;
+    cancelAnimations = true;
 }
 
 function stopAnimations() {
@@ -78,7 +82,7 @@ function Eingabe() {
     let zug4min = document.getElementById("ibZug4min").value;
 
     
-var lauftext4text = document.getElementById("ibZug4lauftext").value;
+var lauftext = document.getElementById("ibZug4lauftext").value;
 
 
     //Zug 1
@@ -215,13 +219,13 @@ var lauftext4text = document.getElementById("ibZug4lauftext").value;
         var lauftext4 = c.getContext("2d");
         lauftext4.font = "140px lcdzza10px";
         var x = 3480;
-        var text_width = lauftext4.measureText(lauftext4text).width;
+        var text_width = lauftext4.measureText(lauftext).width;
         lauftext4.fillText("",0,0)
-        lauftext4.fillText(lauftext4text, x, 3480);
-        console.log("lauftext4text = " + lauftext4text);
+        lauftext4.fillText(lauftext, x, 3480);
+        console.log("lauftext = " + lauftext);
         console.log("lauftext4 = " + lauftext4);
 
-        //lauftext(lauftext4, lauftext4text, "auto", 3480, 1000);
+        //lauftext(lauftext4, lauftext, "auto", 3480, 1000);
         window.requestAnimationFrame(moveTicker);
 
         function moveTicker()
@@ -232,7 +236,7 @@ var lauftext4text = document.getElementById("ibZug4lauftext").value;
                     x = x - move_pixel;
                 else
                     x = 4000 + text_width;
-                lauftext4.fillText(lauftext4text, x, 1000);	
+                lauftext4.fillText(lauftext, x, 1000);	
                 window.requestAnimationFrame(moveTicker);
             }
             else {
@@ -252,7 +256,7 @@ var lauftext4text = document.getElementById("ibZug4lauftext").value;
 
 }
 
-function lauftext(textelement, text, speed, xcoor, ycoor)
+/*function lauftext(textelement, text, speed, xcoor, ycoor)
 {
     
     window.requestAnimationFrame(lauftext);
@@ -260,7 +264,7 @@ function lauftext(textelement, text, speed, xcoor, ycoor)
     text_width = lauftext2.measureText(textelement).width;
     if(speed == "auto") {speed = 3} //Wenn man als Geschw. "auto" angibt, ist automatisch die Geschw. von 3 gesetzt.
     if(allowAnimations == true) {
-        if (xcoor > 480 /*480 = Anfang jedes Lauftextes*/){
+        if (xcoor > 480 /*480 = Anfang jedes Lauftextes*//*){
             xcoor = xcoor - speed;
             console.log("Animation: check");
         }
@@ -275,7 +279,7 @@ function lauftext(textelement, text, speed, xcoor, ycoor)
     else{
         window.requestAnimationFrame(lauftext);
     }
-}
+}*/
 
 function linieumwandeln (ddel, productName = null) {
     
@@ -286,6 +290,7 @@ function linieumwandeln (ddel, productName = null) {
         var value=ddel;
     }
     var wert;
+    //Todo: in Switch-Funktion umwandeln
          if (value == "S1" || value == "S 1"){wert = "1";}
     else if (value == "S2" || value == "S 2"){wert = "2";}
     else if (value == "S3" || value == "S 3"){wert = "3";}
@@ -324,28 +329,29 @@ async function searchstation(searchstring, outputtf){
 
 async function apirequest(traincount){
     leeren();                               //Bildschirm leeren
-    document.getElementById("loading_gif").style.visibility = "visible";
+    document.getElementById("loading_gif").style.visibility = "visible";    //Ladeindikator anzeigen
     var res = document.getElementsByName('datasource'); //auto: Daten sollen autmatisch aberufen, manual: daten sollen manuell eingegeben werden
 
     if(res[1].checked){
         console.log("GENERATING: Generating URL of API request...");
         ibnrinput = document.getElementById("ibIBNR").value;
         if(ibnrinput==null){console.log("GENERATING: IBNR input was null. Cancelling operation."); return;}
-        apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput.trim() + "/departures?duration=" + requestedduration;
-
+        /*apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput.trim() + "/departures?duration=" + requestedduration;*/
+        apiurl = "https://v5.db.transport.rest/stops/" + ibnrinput.trim() + "/departures?results=4&bus=false&ferry=false&subway=false&tram=false&taxi=false&lang=de"
+        //https://v5.db.transport.rest/stops/8000105/departures?duration=420&results=4&bus=false&ferry=false&subway=false&tram=false&taxi=false&lang=de
 
         //Abrufen der API
         console.log("CALLING: Starting to call the API with "+traincount+" connections...")
-        console.log("CALLING: API-URL:" + apiurl)
+        console.info("CALLING: API-URL:" + apiurl)
 
         try{
-            
             var response = await fetch(apiurl);
             departures = await response.json();
             console.log(departures);
         }
         catch(err) { //Fhlermeldung, falls der Abruf nicht geklappt hat,
         console.log("CALLING ERROR: The API call did not work. Just try again. Cancelling operation...");   
+        alert("Fehler: API-Aufruf fehlgeschlagen.")
         }
         console.log("CALLING: Succesfully called API data")
         
@@ -353,7 +359,7 @@ async function apirequest(traincount){
         
 
         //Prüfen, ob es sich bei der Verbindung nicht um einen Bus handelt
-        for (let i = 0; i <= traincount; i++) {
+        for (let i = 0; i < traincount; i++) {
             //console.log("CONCHECK: checking connection " + i + " ...")
             try{
                 if (departures[i].platform != null) { //departures[i].line.product == "suburban" || departures[i].line.product == "regional" || departures[i].line.product == "nationalExpress"
@@ -403,6 +409,26 @@ async function apirequest(traincount){
                     delay[i] = (time[i] - plannedtime[i]) / 60000;          //und die Verspätung in Minuten berechnet
                 }
                 
+                
+                //====STÖRUNGEN====
+                if(departures[i].remarks[0] != undefined) 
+                {
+                    //Störungen/Bemerkungen entdeckt!
+                    console.warn(departures[i].remarks[0])
+
+                    for(y=0; y<departures[i].remarks.length; y++){
+                        if(remarksformatted == 0){
+                            remarksformatted[i] = " +++ " + departures[i].remarks[y].summary + ": " + departures[i].remarks[y].text
+                        }
+                        else {
+                            remarksformatted[i] += " +++ " + departures[i].remarks[y].summary + ": " + departures[i].remarks[y].text
+                        }
+                        
+                        console.error(remarksformatted[i])
+                    }
+                }
+
+
                 //In Minuten
                 inMin[i] = (((time[i]) - (Date.now() + 7200000)) / 60000).toFixed();
                 //if(inMin[i] <= 0){inMin = " "; console.log("NOW: Train " + i + " is depaturing now")} //Falls der Zug in der aktuellen Minute abfährt, wird auf dem Display keine Minutenangabe mehr angezeigt
@@ -419,8 +445,8 @@ async function apirequest(traincount){
                 }
                 
                 //Bei Bahnhöfen, die mit München, Berlin, etc. beginnen, das wegkürzen (wird bei S-Bahn-Anzeigern auch nicht angezeigt)
-                var replace1 = ["München Leuchtenbergring", "München-Pasing", "München Flughafen Terminal"]
-                var replace2 = ["Leuchtenbergring", "Pasing", "Flughafen/Airport °"];
+                var replace1 = ["München Leuchtenbergring", "München-Pasing", "München Flughafen Terminal", "Hamburg-Poppenbüttel"]
+                var replace2 = ["Leuchtenbergring", "Pasing", "Flughafen/Airport °", "Poppenbüttel"];
                         
                 for (j=0; j<=replace1.length; j++)
                 {
@@ -470,13 +496,13 @@ async function apirequest(traincount){
 
 
     var currentline = 0;
-    for(let i=0; i<=traincount; i++) {
+    for(let i=0; i<traincount; i++) {
 
         if(direction[i] != null /*Prüfen ob Eintrag gültig oder leer (weil gefiltert)*/){
             
             //if(delay[i-1] == 0){currentline++;} //Die Variable currentline wird benutzt, um die aktuelle Zeile festzustellen. Sie wird nur um eins erhöht, wenn ein Zug wirklich geschrieben wird.
             currentline++;
-            console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), NUMBER " + currentline)    
+            console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), LINE " + currentline)    
             
             var  lineContext = c.getContext("2d");
             lineContext.font = "140px lcdzza10px-linien"
@@ -502,7 +528,13 @@ async function apirequest(traincount){
             minContext.fillStyle ="white";
             minContext.textAlign = "end"; 
             minContext.fillText(inMin[i], ycoords[3], xcoords[currentline-1]);
-            } else{console.log("NOW: Train in line " + currentline + " is depaturing now")}       
+            } else{console.log("NOW: Train in line " + currentline + " is depaturing now")}
+            
+            if(remarksformatted[i] != undefined) {
+                currentline++;
+                laufschrift(remarksformatted[i], xcoords[currentline-1] )
+                console.info("WRITE: Marquee will be generated. Line: ", currentline, ", y: ", y)
+            }
         }
         else {
             console.log("WRITE: Connection " + i +" will NOT be written (id " + i +", line: " +(currentline+1)+" )")
@@ -512,54 +544,34 @@ async function apirequest(traincount){
         
         
     }
-
-
-    /*Benötigte Variablen:
-    -Linie (umgewandelt, das wird aber in einer anderen Funktion erledigt),
-    -Ziel
-    -Zeit (in Minuten umgewandelt)
-    -Verspätung (in Minuten)
-    -Gleis
-    -evtl. Belegung*/
-    
-    
-    /*var dest1 = departures[0].direction;
-    var time1 = departures[0].when;
-    var line1 = departures[0].line.name;
-    console.log("Ziel: " + dest1);
-    console.log("Zeit: " + time1);
-    console.log("Linie: " + line1)*/
 }
 
-async function searchstations() {
-    const stationresponse = await fetch('/searchstations');
-    const stationanswer = await stationresponse.json();
-    console.log(stationanswer)
-}
+function laufschrift(lauftext, y, xbegin = 480, xend = 3480, textheight=140, fontstyle = "140px lcdzza10px", schrittweite = 3){
+    allowAnimations = true;
+    var ctx = c.getContext("2d");
+    ctx.font = fontstyle;
+    ctx.fillStyle ="white";
+    var x = xend;
+    var text_width = ctx.measureText(lauftext).width;
+    ctx.fillText(lauftext, x, 3480);
+    console.log("lauftext4 = " + ctx);
 
+    window.requestAnimationFrame(moveTicker);
 
-
-/*async function nextstation() {
-    if('geolocation' in navigator) {
-        console.log("Getting user location...")
-        navigator.geolocation.getCurrentPosition(async position => {
-            console.log(position.coords);
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const location = {lon, lat}
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(location)
-            }
-            const response = await fetch('/locate', options)
-            const data = await response.json();
-            console.log(data);
-          });
-        
-    } else {
-        alert("An error occured attempting to get usere's geolocation. Make sure you are connected to the website via https.")
+    function moveTicker()
+    {
+        if(allowAnimations == true){
+            ctx.clearRect(xbegin,y-textheight,(xend+10)-(xbegin-10),textheight+(textheight*0.25));
+            if (x > xbegin )
+                x = x - schrittweite;
+            else
+                x = xend + text_width;
+                ctx.fillText(lauftext, x, y);	
+            window.requestAnimationFrame(moveTicker);
+        }
+        else {
+            window.requestAnimationFrame(moveTicker);
+        }
+        if(cancelAnimations == true) {cancelAnimations == false; return;}
     }
-}*/
+}
