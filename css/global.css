@@ -114,3 +114,34 @@ p{
     padding-left: 2px;
     color: white;
 }
+
+button{
+    font-family:  Helvetica, sans-serif;
+    line-height: 120%;
+    cursor: pointer;
+    padding: 3px 15px;
+    display: inline-block;
+    margin: 5px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    outline: none;
+    border: 2px solid #000;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: #000;
+    color: aliceblue;
+}
+
+input, select{
+    font-family:  Helvetica, sans-serif;
+    line-height: 120%;
+    padding: 3px 3px;
+    display: inline-block;
+    margin: 5px 2px;
+    font-weight: 700;
+    border: 2px solid #000;
+    transition: all 0.3s;
+}
