@@ -417,7 +417,7 @@ async function apirequest(traincount){
                     console.warn(departures[i].remarks[0])
 
                     for(y=0; y<departures[i].remarks.length; y++){
-                        if(remarksformatted == 0){
+                        if(remarksformatted == null){
                             remarksformatted[i] = " +++ " + departures[i].remarks[y].summary + ": " + departures[i].remarks[y].text
                         }
                         else {
@@ -428,7 +428,7 @@ async function apirequest(traincount){
                     }
                 }
 
-
+                
                 //In Minuten
                 inMin[i] = (((time[i]) - (Date.now() + 7200000)) / 60000).toFixed();
                 //if(inMin[i] <= 0){inMin = " "; console.log("NOW: Train " + i + " is depaturing now")} //Falls der Zug in der aktuellen Minute abfährt, wird auf dem Display keine Minutenangabe mehr angezeigt
@@ -561,7 +561,7 @@ function laufschrift(lauftext, y, xbegin = 480, xend = 3480, textheight=140, fon
     function moveTicker()
     {
         if(allowAnimations == true){
-            ctx.clearRect(xbegin,y-textheight,(xend+10)-(xbegin-10),textheight+(textheight*0.25));
+            ctx.clearRect(xbegin-20,y-textheight,(xend-xbegin)+30,textheight+(textheight*0.25));
             if (x > xbegin )
                 x = x - schrittweite;
             else
@@ -574,4 +574,10 @@ function laufschrift(lauftext, y, xbegin = 480, xend = 3480, textheight=140, fon
         }
         if(cancelAnimations == true) {cancelAnimations == false; return;}
     }
+}
+
+saghallo("Servas");
+
+function saghallo(name) {
+    console.log("Hallo", name)
 }
