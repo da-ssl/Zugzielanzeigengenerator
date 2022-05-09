@@ -35,11 +35,11 @@
 
 * {
     font-family: 'Source Sans Pro', sans-serif;
+    tab-size: 3;
 }
 
 .zugabschnitt{
     font-family: 'Anek Odia', sans-serif;
-    margin-top: 15px;
     font-weight: 600;
     font-size: 16px;
 }
@@ -161,4 +161,26 @@ input, select{
     font-weight: 700;
     border: 2px solid #000;
     transition: all 0.3s;
+}
+
+#headerbg {
+    z-index:1;
+    position:absolute;
+}
+
+#headerlogo {
+    z-index:2;
+    width:300px;
+    position:absolute;
+    top:25px;
+    margin-left:15px;
+}
+
+#navbar {
+    position: absolute;
+    text-align: right;
+    top: inherit
+    right: 0px;
+    z-index: 3;
+    color: white;
 }

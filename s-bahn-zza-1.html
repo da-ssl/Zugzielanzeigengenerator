@@ -10,15 +10,18 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <script src="js/bowser.js"></script>
 </head>
 
-<header id="header" style="height:120px;">
-    <img src="img/header.png" style="width:1000px;z-index:1;position:absolute;">
-    <a href="index.html"><img src="img/logo.png" style="z-index:2;width:300px;position:absolute;top:25px;margin-left:15px;"></a>
-</header>
-
 <body>
-    <div class="inhalt">
+    <div id="header" style="height:120px;">
+        <img src="img/header.png" width="1000" id="headerbg" >
+        <a href="index.html"><img src="img/logo.png" id="headerlogo"></a>
+        <div id="navbar">Start  Generatoren  Über</div>
+    </div>
+
+    
+    <div class="inhalt he">
         <h1>S-Bahn-Zugzielanzeiger.</h1>
         <h2 style="border-bottom: 0px !important;">Einfach, zweifarbig</h2>
         
@@ -30,15 +33,14 @@
         
 
 
-        <div id="eingabemaske">
+        <div id="eingabemaske he">
             <h1>Manuelles Eingeben der Daten:</h1>
             <input type="radio" name="datasource" value="manual" id="manual"> <label for="manual">Daten manuell eingeben:</label>
             <div class="zugdaten-eingabe" id="zug1">
                 
                 
-                <div class="zugabschnitt">Zug 1:</div>
-                
-                    Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug1ziel">
+                <b>Zug 1:</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug1ziel">
                     <!--Linie: <input type="text" placeholder="3" id="ibZug1linie" maxlength="1" size="1">-->
                     Linie: 
                     <select id="ibZug1linie">
@@ -59,7 +61,7 @@
             </div>
 
             <div class="zugdaten-eingabe" id="zug2">
-                <div class="zugabschnitt">Zug 2:</div>
+                <b>Zug 2:</b>&nbsp;&nbsp;&nbsp;&nbsp;
                 Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug2ziel">
                 Linie: 
                 <select id="ibZug2linie"> <option>--</option>
@@ -80,7 +82,7 @@
             </div>
 
             <div class="zugdaten-eingabe" id="zug3">
-                <div class="zugabschnitt">Zug 3:</div>
+                <b>Zug 3:</b>&nbsp;&nbsp;&nbsp;&nbsp;
                 Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug3ziel">
                 Linie:
                 <select id="ibZug3linie"> <option>--</option>
@@ -101,7 +103,7 @@
             </div>
 
             <div id="zug4">
-                <div class="zugabschnitt">Zug 4:</div>
+                <b>Zug 4:</b>&nbsp;&nbsp;&nbsp;&nbsp;
                 Ziel: <input type="text" placeholder="Frankfurt Hbf" id="ibZug4ziel">
                 Linie:
                 <select id="ibZug4linie"> <option>--</option>
@@ -125,14 +127,15 @@
             <br><br>
             <button type="button" onclick="Eingabe();">Eingabe</button>
             <button type="button" onclick="leeren();">Leeren</button>
-            <button type="button" onclick="stopAnimations();">Animationen anhalten.</button>
-            <button type="button" onclick="startAnimations();">Animationen wieder beginnen.</button>
+            <button type="button" onclick="switchAnimations();">Animationen an/aus</button>
             <button type="button" onclick="laufschrift('Beispiellauftext', 672);">Lauftext-Debug</button>
             <br><br>
             <input type="radio" name="datasource" value="auto" id="auto"> <label for="auto">Daten automatisch abrufen:</label>
             <input type="text" id="ibIBNR" placeholder="8000105">
             <button type="button" onclick="apirequest(4);">Daten abrufen</button>
             <img src="img/loading.gif" id="loading_gif" style="height:16px;padding-top: 1px;padding-bottom: 1px; visibility: hidden;">
+            <br><br>
+            <button type="button" onclick="api_request(4);">Daten abrufen (Neu)</button>
            <!--<button type="button" onclick="nextstation();">Suche näheste Station...</button>--> 
            <h2 style="margin-top: 20px;">Wichtige IBNRs:</h2>
            <table>
@@ -159,7 +162,9 @@
             </table>
         </div>
     </div>
+    <script src="js/bowser.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/bowser.js"></script>
 </body>
 <footer>
     <div class="footer">
