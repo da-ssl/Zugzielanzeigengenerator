@@ -37,8 +37,8 @@ function leeren() {
     var d = document.getElementById("text01");
     var e = d.getContext("2d");
     e.clearRect(0, 0, d.width, d.height);
-    allowAnimations = false;
     lauftext = null;
+    allowAnimations = false;
     cancelAnimations = true;
 }
 
@@ -221,8 +221,6 @@ var lauftext = document.getElementById("ibZug4lauftext").value;
         var text_width = lauftext4.measureText(lauftext).width;
         lauftext4.fillText("",0,0)
         lauftext4.fillText(lauftext, x, 3480);
-        console.log("lauftext = " + lauftext);
-        console.log("lauftext4 = " + lauftext4);
 
         //lauftext(lauftext4, lauftext, "auto", 3480, 1000);
         window.requestAnimationFrame(moveTicker);
@@ -497,6 +495,9 @@ async function apirequest(traincount){
     console.warn(direction)
 
     var currentline = 0;
+
+    var desttextfields=['ibZug1ziel','ibZug2ziel','ibZug3ziel','ibZug4ziel'];
+    var platformtextfields=['ibZug1gleis','ibZug2gleis','ibZug3gleis','ibZug4gleis']
     for(let i=0; i<traincount; i++) {
 
         if(direction[i] != null /*Prüfen ob Eintrag gültig oder leer (weil gefiltert)*/){
@@ -505,6 +506,10 @@ async function apirequest(traincount){
             currentline++;
             console.log("WRITE: Connection to " + direction[i] + " will be written (id " + i+"), LINE " + currentline)    
             
+            //========================
+            //====Linie===============
+            //========================
+
             var  lineContext = c.getContext("2d");
             lineContext.font = "140px lcdzza10px-linien"
             lineContext.fillStyle ="white";
@@ -516,12 +521,14 @@ async function apirequest(traincount){
             platformContext.fillStyle ="white";
             platformContext.textAlign = "end"; 
             platformContext.fillText(platform[i], ycoords[2], xcoords[currentline-1]);      //TODO: weiß hinterlegte Schrift, falls platformchange == true
+            document.getElementById(platformtextfields[currentline-1]).value = platform[i];
 
             var  destContext = c.getContext("2d");
             destContext.font = "140px lcdzza10px"
             destContext.fillStyle ="white";
             destContext.textAlign = "left"; 
             destContext.fillText(direction[i], ycoords[1], xcoords[currentline-1]);
+            document.getElementById(desttextfields[currentline-1]).value = direction[i];
 
             if(inMin[i] > 0)
             {var  minContext = c.getContext("2d");
@@ -567,13 +574,14 @@ function laufschrift(lauftext, y, xbegin = 480, xend = 3480, textheight=140, fon
                 x = x - schrittweite;
             else
                 x = xend + text_width;
-                ctx.fillText(lauftext, x, y);	
-            window.requestAnimationFrame(moveTicker);
+                ctx.fillText(lauftext, x, y);
+                if(cancelAnimations == true){console.info("Cancelling Animations..."); window.cancelAnimationFrame(moveTicker);return;
+                }else{window.requestAnimationFrame(moveTicker);}
+            
         }
         else {
             window.requestAnimationFrame(moveTicker);
         }
-        if(cancelAnimations == true) {cancelAnimations == false; lauftext = null; return;}
     }
 }
 
