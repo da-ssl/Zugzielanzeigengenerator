@@ -1,6 +1,7 @@
 //https://v5.db.transport.rest/stops/8002347/departures?duration=120
 
 
+
 var zug1linie = "";
 var zug2linie = "";
 var zug3linie = "";
@@ -41,11 +42,9 @@ function leeren() {
     cancelAnimations = true;
 }
 
-function stopAnimations() {
-    allowAnimations = false;
-}
-function startAnimations() {
-    allowAnimations = true;
+function switchAnimations() {
+    if(allowAnimations == true) {allowAnimations = false}
+    else {allowAnimations = true}
 }
 
 
@@ -337,7 +336,7 @@ async function apirequest(traincount){
         ibnrinput = document.getElementById("ibIBNR").value;
         if(ibnrinput==null){console.log("GENERATING: IBNR input was null. Cancelling operation."); return;}
         /*apiurl = "https://v5.db.transport.rest/stops/"+ ibnrinput.trim() + "/departures?duration=" + requestedduration;*/
-        apiurl = "https://v5.db.transport.rest/stops/" + ibnrinput.trim() + "/departures?results=4&bus=false&ferry=false&subway=false&tram=false&taxi=false&lang=de"
+        apiurl = "https://v5.db.transport.rest/stops/" + ibnrinput.trim() + "/departures?duration=500&results=8&bus=false&ferry=false&subway=false&tram=false&taxi=false&lang=de"
         //https://v5.db.transport.rest/stops/8000105/departures?duration=420&results=4&bus=false&ferry=false&subway=false&tram=false&taxi=false&lang=de
 
         //Abrufen der API
@@ -471,15 +470,16 @@ async function apirequest(traincount){
         }
     } else{
         //======DATEN MANUELL ABFRAGEN=======
-        for(let i=0; i<=3; i++) {   //y zeigt die aktuelle Zeile im ZZA
-            var destinput = [];
-            destinput[i] = [document.getElementById("ibZug1ziel"), document.getElementById("ibZug2ziel"), document.getElementById("ibZug3ziel"), document.getElementById("ibZug4ziel")];
-            var destinput2 = [];
-            destinput2[i] = ["ibZug1ziel", 'ibZug2ziel']
+        console.info("DATA IS BEING RECIEVED FROM USER INPUT")
+        destinput = ["ibZug1ziel","ibZug2ziel","ibZug3ziel","ibZug4ziel"];
+        for(let i=0; i<traincount; i++) {   //i zeigt die aktuelle Zeile im ZZA
+                       
+            
             try{
-                console.log("GETTINGDATA: Going to write train to "+ document.getElementById(destinput2[i]).value)
+                console.log("GETTINGDATA: Going to write train to "+ document.getElementById(destinput[i]).value)
+                direction[i] = document.getElementById(destinput[i]).value
             } catch(err) {
-                console.log("GETTINGDATA: Error. ConID: " + i)
+                console.log(err)
             }
             //direction[y] = document.getElementById(destinput[y]).value;
 
@@ -494,6 +494,7 @@ async function apirequest(traincount){
     var xcoords = [512, 672, 832, 1000];
     var ycoords = [500, 772, 2470, 3480];
 
+    console.warn(direction)
 
     var currentline = 0;
     for(let i=0; i<traincount; i++) {
@@ -572,12 +573,37 @@ function laufschrift(lauftext, y, xbegin = 480, xend = 3480, textheight=140, fon
         else {
             window.requestAnimationFrame(moveTicker);
         }
-        if(cancelAnimations == true) {cancelAnimations == false; return;}
+        if(cancelAnimations == true) {cancelAnimations == false; lauftext = null; return;}
     }
 }
 
-saghallo("Servas");
+async function api_request(traincount) {
+    requesturl = "https://dbf.finalrewind.org/Grafing%20Bahnhof.json?version=3"
+    try{
+        var response = await fetch(requesturl);
+        apidata = await response.json();
+        console.log(apidata);
+    }
+    catch(err) { //Fhlermeldung, falls der Abruf nicht geklappt hat,
+    alert("Der API-Aufruf hat nicht funktioniert. Bitte versuchen Sie es erneut.")
+    }
+    
+    //================================================
+    //=============
 
-function saghallo(name) {
-    console.log("Hallo", name)
+}
+
+
+
+
+function hideControlElements() {
+    document.body.style.visibility = 'hidden';
+    document.body.style.margin = "0 0 0 0";
+    document.getElementById("header").style.height = 0;
+    document.body.style.height= 0 ;
+    document.getElementById("zza-01").style.display = 'flex';
+}
+
+function showControlElements() {
+
 }
