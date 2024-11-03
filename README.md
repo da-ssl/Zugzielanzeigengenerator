@@ -1,3 +1,13 @@
+> [!WARNING]
+> Diese Version des ZZAGenerators ist schlecht geschrieben und wird auch **nicht mehr weiterentwickelt**. Sie wird lediglich als Readonly-Repository hier verbleiben.
+>
+> Die Neue Version gibt es hier:
+>
+> **https://anrufschranke.de/zza/**
+>
+> Sie steckt zwar auch noch in den Kinderschuhen, ist aber wesentlich ausgereifter und kann auch potentiell auf andere ZZAs erweitert werden.
+>
+> ~ 03. November 2024
 # Zugzielanzeigengenerator
 Web-App zum Generieren von Zugzielanzeigern mit benutzerdefiniertem Text.
 <img src="https://raw.githubusercontent.com/da-ssl/Zugzielanzeigengenerator/main/img/preview.png" alt="Vorschau des Generators" width="545"/>
